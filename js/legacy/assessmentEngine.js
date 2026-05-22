@@ -3554,222 +3554,33 @@ function generateReport() {
         const now = new Date();
         const allViolations = checkAllViolations();
 
-        let html = typeof ReportBuilder !== 'undefined'
-            ? ReportBuilder.buildReportHeader(now) + '<div class="report-body">'
-            : `<div class="report-body"><p>Generated: ${now.toLocaleString()}</p>`;
+        const speciesEntries = currentSelectedSpecies.map(speciesId => {
+            const species = SPECIES_DATA[speciesId];
+            const rawSpeciesData = (dataSource.species && dataSource.species[speciesId]) || {};
+            const speciesData = normalizeSpeciesAssessmentData(speciesId, species, rawSpeciesData);
+            return {
+                speciesId,
+                species,
+                speciesData,
+                violations: species ? checkSpeciesViolations(speciesId, species, speciesData) : []
+            };
+        });
 
-        if (typeof ReportBuilder !== 'undefined') {
-            html += ReportBuilder.buildSummaryBanner(allViolations.length);
-        }
-    
-    // Generate report for each species
-    currentSelectedSpecies.forEach(speciesId => {
-        const species = SPECIES_DATA[speciesId];
-        if (!species) {
-            console.error(`Species data not found for ${speciesId}`);
-            html += `
-                <div class="report-section">
-                    <h3>SPECIES ASSESSMENT - ${speciesId.toUpperCase()}</h3>
-                    <div class="report-row">
-                        <span class="report-label">Status:</span>
-                        <span class="report-value">Species data not available</span>
-                    </div>
-                </div>
-            `;
-            return;
-        }
-        
-        const rawSpeciesData = (dataSource.species && dataSource.species[speciesId]) || {};
-        const speciesData = normalizeSpeciesAssessmentData(speciesId, species, rawSpeciesData);
-        const violations = checkSpeciesViolations(speciesId, species, speciesData);
-        const hasViolations = violations.length > 0;
-        
-        html += typeof ReportBuilder !== 'undefined'
-            ? ReportBuilder.buildSpeciesSectionOpen(species, speciesId, hasViolations)
-            : `<div class="report-section"><h3>${species.name || speciesId}</h3>`;
-        
-        const permitTypeKey = speciesData['permit-type'] || speciesData.permitType;
-        const usesDynamicQuestions = !!(species.regulations?.assessmentQuestions);
-        const hasGroupedPermit = speciesData['has-permit'] !== undefined && speciesData['has-permit'] !== '';
-
-        if (!usesDynamicQuestions || hasGroupedPermit) {
-            const permitCFR = species.regulations?.permits && Object.values(species.regulations.permits).length > 0 ?
-                Object.values(species.regulations.permits)[0]?.cfr : null;
-            html += `
-                <div class="report-row">
-                    <span class="report-label">Federal Permit:</span>
-                    <span class="report-value ${speciesData['has-permit'] !== 'yes' ? 'violation' : 'compliant'}">
-                        ${formatPermitStatus(speciesData['has-permit'])}
-                        ${permitCFR ? ` <span class="cfr-cite">(${permitCFR})</span>` : ''}
-                    </span>
-                </div>
-            `;
-        }
-        if ((speciesData['has-permit'] === 'yes' || permitTypeKey) && permitTypeKey && species.regulations?.permits) {
-            const permit = species.regulations.permits[permitTypeKey];
-            if (permit) {
-                html += `
-                    <div class="report-row">
-                        <span class="report-label">Permit Type:</span>
-                        <span class="report-value">${permit.name || permitTypeKey} ${permit.cfr ? `<span class="cfr-cite">(${permit.cfr})</span>` : ''}</span>
-                    </div>
-                `;
-            }
-        }
-
-        const onBoardYes = speciesData.hasShark === true || speciesData.hasShark === 'yes'
-            || speciesData.isProhibited === true || speciesData.isProhibited === 'yes';
-        if (onBoardYes) {
-            html += `
-                <div class="report-row">
-                    <span class="report-label">On Board / Prohibited:</span>
-                    <span class="report-value violation">Yes — prohibited or restricted species reported on vessel</span>
-                </div>
-            `;
-        }
-        if (speciesData.released === false || speciesData.released === 'no') {
-            html += `
-                <div class="report-row">
-                    <span class="report-label">Release Status:</span>
-                    <span class="report-value violation">Not all fish released immediately</span>
-                </div>
-            `;
-        }
-
-        const possessionCount = getSpeciesPossessionCount(speciesData);
-        if (possessionCount !== null) {
-            const possessionViolation = violations.some(v =>
-                /possession|prohibited|exceeds limit|retention/i.test(v)
-            );
-            const isProhibited = isProhibitedSpecies(speciesId) && possessionCount > 0;
-            html += `
-                <div class="report-row">
-                    <span class="report-label">${(speciesData.numberOfFish !== undefined && speciesData.numberOfFish !== '') || (speciesData.numberOfSharks !== undefined && speciesData.numberOfSharks !== '') ? 'Fish on Board:' : 'Possession Amount:'}</span>
-                    <span class="report-value ${possessionViolation || isProhibited ? 'violation' : ''}">
-                        ${possessionCount} ${getPossessionUnit(speciesId, speciesData)}
-                        ${isProhibited ? ' (PROHIBITED SPECIES)' : possessionViolation ? ' (OVER LIMIT / PROHIBITED)' : ''}
-                    </span>
-                </div>
-            `;
-        }
-        
-        // Size
-        if (speciesData['size-compliant']) {
-            const sizeCFR = species.regulations?.size?.cfr || species.regulations?.size?.commercialCFR;
-            html += `
-                <div class="report-row">
-                    <span class="report-label">Size Compliance:</span>
-                    <span class="report-value ${speciesData['size-compliant'] === 'no' ? 'violation' : 'compliant'}">
-                        ${formatSizeCompliance(speciesData['size-compliant'])}
-                        ${sizeCFR ? ` <span class="cfr-cite">(${sizeCFR})</span>` : ''}
-                    </span>
-                </div>
-            `;
-        }
-        
-        // Gear
-        if (speciesData['gear-type']) {
-            html += `
-                <div class="report-row">
-                    <span class="report-label">Gear Type:</span>
-                    <span class="report-value">${formatGearType(speciesData['gear-type'])}</span>
-                </div>
-            `;
-        }
-        
-        if (speciesData['mesh-compliant'] || speciesData['dredge-compliant'] || speciesData['trawl-compliant']) {
-            const gearCompliance = speciesData['mesh-compliant'] || speciesData['dredge-compliant'] || speciesData['trawl-compliant'];
-            const meshCFR = speciesId === 'summer-flounder' ? '50 CFR 648.106' : '50 CFR 648.51';
-            html += `
-                <div class="report-row">
-                    <span class="report-label">Gear Compliance:</span>
-                    <span class="report-value ${gearCompliance === 'no' ? 'violation' : 'compliant'}">
-                        ${formatMeshCompliance(gearCompliance)}
-                        ${meshCFR ? ` <span class="cfr-cite">(${meshCFR})</span>` : ''}
-                    </span>
-                </div>
-            `;
-        }
-        
-        // HMS Reporting requirements
-        if (species.regulations?.reporting?.required) {
-            const hmsReported = dataSource.vessel?.requirements?.['hms-reported'] || dataSource.species?.[speciesId]?.['hms-reported'];
-            html += `
-                <div class="report-row">
-                    <span class="report-label">HMS Catch Reporting:</span>
-                    <span class="report-value ${hmsReported === 'no' ? 'violation' : 'compliant'}">
-                        ${hmsReported === 'yes' ? 'Reported' : hmsReported === 'pending' ? 'Pending (Within 24hrs)' : hmsReported === 'no' ? 'NOT REPORTED (REQUIRED)' : 'Not Verified'}
-                        <span class="cfr-cite">(${species.regulations.reporting.cfr})</span>
-                    </span>
-                </div>
-            `;
-        }
-        
-        // Additional checks for scallops
-        if (speciesId === 'atlantic-sea-scallop') {
-            if (speciesData['vms-operational']) {
-                html += `
-                    <div class="report-row">
-                        <span class="report-label">VMS Status:</span>
-                        <span class="report-value ${speciesData['vms-operational'] === 'no' ? 'violation' : 'compliant'}">
-                            ${speciesData['vms-operational'] === 'yes' ? 'Operational' : speciesData['vms-operational'] === 'no' ? 'NOT OPERATIONAL' : 'Unable to Verify'}
-                            <span class="cfr-cite">(50 CFR 648.10)</span>
-                        </span>
-                    </div>
-                `;
-            }
-            
-            if (speciesData['observer-present']) {
-                html += `
-                    <div class="report-row">
-                        <span class="report-label">Observer:</span>
-                        <span class="report-value ${speciesData['observer-present'] === 'no' ? 'violation' : 'compliant'}">
-                            ${speciesData['observer-present'] === 'yes' ? 'Present' : speciesData['observer-present'] === 'no' ? 'REQUIRED BUT NOT PRESENT' : 'Not Required'}
-                            <span class="cfr-cite">(50 CFR 648.11)</span>
-                        </span>
-                    </div>
-                `;
-            }
-            
-            if (speciesData['tdd-installed']) {
-                html += `
-                    <div class="report-row">
-                        <span class="report-label">TDD Status:</span>
-                        <span class="report-value ${speciesData['tdd-installed'] === 'no' ? 'violation' : 'compliant'}">
-                            ${speciesData['tdd-installed'] === 'yes' ? 'Installed' : speciesData['tdd-installed'] === 'no' ? 'REQUIRED BUT NOT INSTALLED' : 'Not Required'}
-                            <span class="cfr-cite">(50 CFR 223.206)</span>
-                        </span>
-                    </div>
-                `;
-            }
-        }
-        
-        if (typeof AssessmentViolations !== 'undefined' && AssessmentViolations.formatDynamicReportRows) {
-            const dynamicRows = AssessmentViolations.formatDynamicReportRows(speciesId, species, speciesData);
-            dynamicRows.forEach(row => {
-                const rowViolation = hasViolations && violations.some(v =>
-                    row.label && v.toLowerCase().includes(row.label.toLowerCase().slice(0, 12))
-                );
-                html += `
-                    <div class="report-row">
-                        <span class="report-label">${row.label}:</span>
-                        <span class="report-value ${rowViolation ? 'violation' : ''}">${row.value}</span>
-                    </div>
-                `;
+        let html;
+        if (typeof ReportBuilder !== 'undefined' && ReportBuilder.buildFullReport) {
+            html = ReportBuilder.buildFullReport({
+                generatedAt: now,
+                allViolations,
+                speciesEntries,
+                dataSource,
+                getPossessionCount: getSpeciesPossessionCount,
+                isProhibitedSpecies
             });
+        } else {
+            html = `<div class="report-body"><p>Generated: ${now.toLocaleString()}</p><p>Report builder unavailable — refresh the page.</p></div>`;
         }
 
-        html += typeof ReportBuilder !== 'undefined'
-            ? ReportBuilder.buildPotentialIssuesBlock(violations)
-            : '';
-        html += typeof ReportBuilder !== 'undefined' ? ReportBuilder.closeReportSection() : '</div>';
-    });
-
-    html += typeof ReportBuilder !== 'undefined'
-        ? ReportBuilder.buildVerdictBox(allViolations) + '</div>'
-        : '</div>';
-    
-    if (reportContent) {
+        if (reportContent) {
         reportContent.innerHTML = html;
         console.log('Report generated successfully');
     } else {
@@ -4575,50 +4386,27 @@ function formatDate(dateStr) {
 }
 
 function formatPermitStatus(status) {
-    const statusMap = {
-        'yes': 'Valid permit verified',
-        'no': 'NO VALID PERMIT',
-        'expired': 'EXPIRED PERMIT'
-    };
-    return statusMap[status] || 'Not assessed';
+    if (typeof ReportBuilder !== 'undefined') return ReportBuilder.formatPermitStatus(status);
+    return status === 'yes' ? 'Valid permit verified' : status === 'no' ? 'NO VALID PERMIT' : 'Not assessed';
 }
 
 function formatSizeCompliance(status) {
-    const statusMap = {
-        'yes': 'Compliant - All meet minimum size',
-        'no': 'NON-COMPLIANT - Undersized fish present',
-        'not-applicable': 'N/A'
-    };
-    return statusMap[status] || 'Not assessed';
+    if (typeof ReportBuilder !== 'undefined') return ReportBuilder.formatSizeCompliance(status);
+    return status || 'Not assessed';
 }
 
 function formatGearType(type) {
-    const typeMap = {
-        'otter-trawl': 'Otter Trawl',
-        'gillnet': 'Gillnet',
-        'dredge': 'New Bedford Scallop Dredge',
-        'trawl': 'Otter Trawl',
-        'other': 'Other'
-    };
-    return typeMap[type] || type;
+    if (typeof ReportBuilder !== 'undefined') return ReportBuilder.formatGearType(type);
+    return type;
 }
 
 function formatMeshCompliance(status) {
-    const statusMap = {
-        'yes': 'Compliant',
-        'no': 'NON-COMPLIANT',
-        'exemption': 'Small Mesh Exemption (LOA)'
-    };
-    return statusMap[status] || 'Not assessed';
+    if (typeof ReportBuilder !== 'undefined') return ReportBuilder.formatMeshCompliance(status);
+    return status || 'Not assessed';
 }
 
 function getPossessionUnit(speciesId, speciesData) {
-    if (speciesId === 'summer-flounder') {
-        return speciesData['permit-type'] === 'recreational' ? 'fish' : 'lbs';
-    } else if (speciesId === 'atlantic-sea-scallop') {
-        const possessionType = speciesData['possession-type'] || speciesData.possessionType;
-        return possessionType === 'inshell' ? 'bushels' : 'lbs';
-    }
+    if (typeof ReportBuilder !== 'undefined') return ReportBuilder.getPossessionUnit(speciesId, speciesData);
     return 'lbs';
 }
 

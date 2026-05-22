@@ -46,57 +46,30 @@ class ReportGenerator {
         }
     }
 
-    // Generate report section for a single species
-    generateSpeciesReport(speciesId, species, speciesData, violations) {
-        let html = `
-            <div class="report-section">
-                <h3>${species.name ? species.name.toUpperCase() : speciesId.toUpperCase()} ASSESSMENT</h3>
-        `;
-
-        // Permit status
-        const permitCFR = species.regulations?.permits && Object.values(species.regulations.permits).length > 0 ?
-            Object.values(species.regulations.permits)[0]?.cfr : null;
-
-        html += `
-            <div class="report-row">
-                <span class="report-label">Federal Permit:</span>
-                <span class="report-value ${speciesData['has-permit'] !== 'yes' ? 'violation' : 'compliant'}">
-                    ${this.formatPermitStatus(speciesData['has-permit'])}
-                    ${permitCFR ? ` <span class="cfr-cite">(${permitCFR})</span>` : ''}
-                </span>
-            </div>
-        `;
-
-        // Possession
-        if (speciesData.possessionAmount !== undefined) {
-            const isViolation = violations.some(v => v.includes('possession') || v.includes('Possession'));
-            html += `
-                <div class="report-row">
-                    <span class="report-label">Possession Amount:</span>
-                    <span class="report-value ${isViolation ? 'violation' : ''}">
-                        ${speciesData.possessionAmount} ${this.getPossessionUnit(speciesId, speciesData)}
-                        ${isViolation ? ' (OVER LIMIT)' : ''}
-                    </span>
-                </div>
-            `;
+    // Generate report section for a single species (delegates to ReportBuilder)
+    generateSpeciesReport(speciesId, species, speciesData, violations, dataSource) {
+        if (typeof ReportBuilder !== 'undefined' && ReportBuilder.buildSpeciesSection) {
+            return ReportBuilder.buildSpeciesSection({
+                speciesId,
+                species,
+                speciesData,
+                violations,
+                dataSource: dataSource || this.state?.assessmentData || {},
+                getPossessionCount: (d) => {
+                    if (typeof getSpeciesPossessionCount === 'function') return getSpeciesPossessionCount(d);
+                    if (typeof AssessmentViolations !== 'undefined') return AssessmentViolations.getCountFromData(d);
+                    return d?.possessionAmount ?? d?.numberOfFish ?? null;
+                },
+                isProhibitedSpecies: (id) => {
+                    if (typeof isProhibitedSpecies === 'function') return isProhibitedSpecies(id);
+                    if (typeof AssessmentViolations !== 'undefined') {
+                        return AssessmentViolations.isProhibitedSpecies(id);
+                    }
+                    return false;
+                }
+            });
         }
-
-        // Violations
-        if (violations.length > 0) {
-            html += `
-                <div class="report-row">
-                    <span class="report-label">Violations:</span>
-                    <span class="report-value violation">
-                        <ul>
-                            ${violations.map(v => `<li>${v}</li>`).join('')}
-                        </ul>
-                    </span>
-                </div>
-            `;
-        }
-
-        html += `</div>`;
-        return html;
+        return `<div class="report-section"><p>${species?.name || speciesId}</p></div>`;
     }
 
     // Generate violations summary
@@ -149,21 +122,17 @@ class ReportGenerator {
         return [...new Set(violations)];
     }
 
-    // Format permit status
     formatPermitStatus(status) {
+        if (typeof ReportBuilder !== 'undefined') return ReportBuilder.formatPermitStatus(status);
         if (!status) return 'Not Checked';
         if (status === 'yes') return '✓ Valid';
         if (status === 'no') return '✗ No Permit';
-        if (status === 'expired') return '! Expired';
         return status;
     }
 
-    // Get possession unit
     getPossessionUnit(speciesId, speciesData) {
-        // Delegate to existing function if available
-        if (typeof getPossessionUnit === 'function') {
-            return getPossessionUnit(speciesId, speciesData);
-        }
+        if (typeof ReportBuilder !== 'undefined') return ReportBuilder.getPossessionUnit(speciesId, speciesData);
+        if (typeof getPossessionUnit === 'function') return getPossessionUnit(speciesId, speciesData);
         return 'units';
     }
 
