@@ -168,7 +168,7 @@ class AssessmentSteps {
     createPermitsSection() {
         try {
             // Delegate to existing function for now (it's very large and complex)
-            // TODO: Migrate fully later
+            // Report HTML: ReportBuilder.buildFullReport (assessmentEngine.generateReport)
             if (typeof createGroupedPermitsSection === 'function') {
                 createGroupedPermitsSection(this.container);
             } else {
