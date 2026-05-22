@@ -3,6 +3,7 @@
   "short_name": "FIN",
   "description": "FIN - Personal fisheries compliance reference for Northeast and HMS regulations (not affiliated with USCG or NOAA)",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#0a1628",
   "theme_color": "#1a2744",

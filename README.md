@@ -31,6 +31,16 @@ Use that exact path (repo name is case-sensitive: `Fin-Fisheries`).
 
 Local testing: open `index.html` directly or use any static file server.
 
+## Install on mobile (PWA)
+
+FIN is a **Progressive Web App** — install it like an app for offline use after one online visit.
+
+**iPhone (Safari):** Open the live URL → **Share** (□↑) → **Add to Home Screen** → Add.
+
+**Android (Chrome):** Open the URL → menu **⋮** → **Install app** or **Add to Home screen**.
+
+**Offline:** Open FIN once while online so the service worker caches files. Later it works without signal (regulation data is bundled; NOAA RSS checks may fail offline — that is expected).
+
 ## Quick start
 
 1. Open the live link above (or `index.html` locally).
