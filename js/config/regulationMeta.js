@@ -4,7 +4,7 @@
  */
 const REGULATION_META = {
     appVersion: '1.0.0',
-    dataLastUpdated: '2025-01-16',
+    dataLastUpdated: '2026-05-21',
     region: 'northeast',
     dataFiles: [
         'species-data.js',

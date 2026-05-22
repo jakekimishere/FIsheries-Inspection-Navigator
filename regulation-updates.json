@@ -1,34 +1,51 @@
 {
-  "lastUpdate": "2025-01-16",
-  "version": "1.0.0",
+  "lastUpdate": "2026-05-21",
+  "version": "1.1.0",
   "region": "Northeast",
   "dataSource": {
     "primary": "NOAA Fisheries Greater Atlantic Regional Fisheries Office",
-    "summerFlounder": "NOAA 2025 Summer Flounder, Scup, Black Sea Bass, and Bluefish Specifications",
-    "scallop": "NOAA Framework Adjustment 39 to the Atlantic Sea Scallop Fishery Management Plan",
-    "cfr": "50 CFR Part 648 - Fisheries of the Northeastern United States"
+    "hms": "NOAA Atlantic Highly Migratory Species",
+    "scallop": "Framework Adjustment 39 - Atlantic Sea Scallop FMP",
+    "summerFlounder": "NOAA 2025 Summer Flounder Specifications",
+    "cfr": "50 CFR Parts 648 and 635"
   },
   "changes": [
     {
-      "date": "2025-01-07",
-      "title": "Updated with current NOAA 2025 specifications",
-      "description": "Summer Flounder and Atlantic Sea Scallop regulations updated with latest NOAA specifications and Framework 39",
-      "affectedSpecies": ["summer-flounder", "atlantic-sea-scallop"],
+      "date": "2026-05-21",
+      "title": "Tier A regulation refresh",
+      "description": "Updated Tier A species (summer flounder, scallop, bluefin tuna, swordfish, sandbar/blacktip sharks) from NOAA bulletins and Framework 39. Bluefin June/July retention limits split; scallop access area trip limits; swordfish charter limits.",
+      "affectedSpecies": [
+        "summer-flounder",
+        "atlantic-sea-scallop",
+        "bluefin-tuna",
+        "swordfish",
+        "sandbar-shark",
+        "blacktip-shark"
+      ],
       "sources": [
         "https://www.fisheries.noaa.gov/bulletin/2025-specifications-summer-flounder-scup-black-sea-bass-and-bluefish-fisheries",
-        "https://www.fisheries.noaa.gov/bulletin/2025-fishing-year-limited-access-allocations-atlantic-sea-scallop-fishery"
+        "https://www.fisheries.noaa.gov/bulletin/2025-fishing-year-limited-access-allocations-atlantic-sea-scallop-fishery",
+        "https://www.fisheries.noaa.gov/action/closure-atlantic-bluefin-tuna-general-category-commercial-fishery-8",
+        "https://www.fisheries.noaa.gov/atlantic-highly-migratory-species/recreational-atlantic-shark-fishery-statuses-minimum-sizes-and"
+      ]
+    },
+    {
+      "date": "2025-01-16",
+      "title": "Bluefin Tuna Jan 2026 closure",
+      "description": "General Category commercial BFT closure Jan 14 - Mar 31, 2026",
+      "affectedSpecies": ["bluefin-tuna"],
+      "sources": [
+        "https://www.fisheries.noaa.gov/action/closure-atlantic-bluefin-tuna-general-category-commercial-fishery-8"
       ]
     }
   ],
   "verification": {
-    "note": "All data sourced directly from official NOAA publications and CFR regulations",
-    "lastVerified": "2025-01-07",
+    "note": "Tier A updates verified against NOAA bulletins listed in changes[].sources. Always confirm current quotas/closures before enforcement actions.",
+    "lastVerified": "2026-05-21",
     "verificationSources": [
-      "NOAA Greater Atlantic Regional Fisheries Office",
-      "50 CFR Part 648",
-      "Federal Register publications"
+      "NOAA Fisheries bulletins",
+      "50 CFR Parts 648 and 635",
+      "Federal Register"
     ]
-  },
-  "notes": "This file should be hosted and updated whenever NOAA publishes new regulations. All data is sourced from official NOAA publications and verified against current CFR regulations."
+  }
 }
-

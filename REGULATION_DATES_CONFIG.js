@@ -18,9 +18,15 @@ const REGULATION_DATES = {
             reopenings: [
                 {
                     date: '2026-06-01T00:00:00',
-                    limit: { count: 1, unit: 'fish', size: '>73" CFL', period: 'per vessel per day' },
-                    period: 'June-August',
-                    notes: 'Fishery automatically reopens. Retention limit: 1 fish >73" CFL per vessel per day.'
+                    limit: { count: 3, unit: 'fish', size: '≥73" CFL', period: 'per vessel per day/trip' },
+                    period: 'June 2026',
+                    notes: 'General Category reopens June 1–30, 2026: 3 large medium or giant BFT per vessel per day/trip (unless adjusted by NOAA).'
+                },
+                {
+                    date: '2026-07-01T00:00:00',
+                    limit: { count: 1, unit: 'fish', size: '≥73" CFL', period: 'per vessel per day/trip on open days' },
+                    period: 'July-August 2026',
+                    notes: 'July 1–Aug 31, 2026: 1 large medium or giant BFT per vessel per day/trip on open days; RFDs (Tue/Fri/Sat) = 0.'
                 }
             ]
         }

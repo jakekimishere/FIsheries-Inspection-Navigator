@@ -67,11 +67,18 @@ const SPECIES_DATA = {
                     notes: 'Check for area-specific restrictions'
                 }
             },
+            dataSources: [
+                {
+                    title: 'NOAA 2025 Summer Flounder Specifications',
+                    url: 'https://www.fisheries.noaa.gov/bulletin/2025-specifications-summer-flounder-scup-black-sea-bass-and-bluefish-fisheries',
+                    effective: '2025-01-01'
+                }
+            ],
             seasons: {
                 federal: {
                     open: 'Seasonal with closures',
-                    cfr: '50 CFR 635.23',
-                    notes: 'General Category Commercial: Closed Jan 14 - Mar 31, 2026. Reopens June 1, 2026. Check current closures.'
+                    cfr: '50 CFR 648.105',
+                    notes: '2025 specs: no change to federal possession measures (RHL 6.35M lb). State seasons/bags may differ. Verify 2026+ specs separately.'
                 },
                 state: {
                     varies: true,
@@ -237,7 +244,13 @@ const SPECIES_DATA = {
         imagePath: 'images/fish/Atlantic_Sea_Scallop.jpg', // Path to actual fish image file
         color: '#fff0cc',
         regulations: {
-            // Will be populated from existing scallop data
+            dataSources: [
+                {
+                    title: 'Framework Adjustment 39 (2025–2026 FY)',
+                    url: 'https://www.fisheries.noaa.gov/bulletin/2025-fishing-year-limited-access-allocations-atlantic-sea-scallop-fishery',
+                    effective: '2025-04-21'
+                }
+            ],
             permits: {
                 'la-full': {
                     name: 'Limited Access Full-Time',
@@ -274,12 +287,16 @@ const SPECIES_DATA = {
                 'la-full': {
                     name: 'LA Full-Time',
                     limit: { shucked: 18000, inshell: 2250 },
-                    cfr: '50 CFR 648.53'
+                    accessAreaTrip: { shucked: 12000, inshell: 1500 },
+                    cfr: '50 CFR 648.59',
+                    notes: 'Open-area reference limits shown. Access Area trip possession (Framework 39): 12,000 lb shucked per trip (Area I or II); up to 24,000 lb total allocation FY2025.'
                 },
                 'la-part': {
                     name: 'LA Part-Time',
                     limit: { shucked: 14400, inshell: 1800 },
-                    cfr: '50 CFR 648.53'
+                    accessAreaTrip: { shucked: 9600, inshell: 1200 },
+                    cfr: '50 CFR 648.59',
+                    notes: 'Framework 39 access area trip possession: 9,600 lb shucked per trip (Area I or II). Verify open-area limits for DAS trips.'
                 },
                 'la-occ': {
                     name: 'LA Occasional',
@@ -341,7 +358,7 @@ const SPECIES_DATA = {
                 'access-areas': {
                     name: 'Access Areas',
                     cfr: '50 CFR 648.59',
-                    notes: 'Rotating access areas with specific trip allocations'
+                    notes: 'Framework 39: Area I open May 15, 2025–Mar 31, 2026. Area II open May 15–Nov 15, 2025; closed Nov 15, 2025–May 15, 2026. Delayed opening until May 15, 2025.'
                 },
                 'ngom': {
                     name: 'Northern Gulf of Maine (NGOM)',
@@ -390,13 +407,14 @@ const SPECIES_DATA = {
                     dependsOn: ['permitType', 'possessionAmount'],
                     autoCheck: true,
                     limits: {
-                        'la-full': { shucked: 18000, inshell: 2250 },
-                        'la-part': { shucked: 14400, inshell: 1800 },
+                        'la-full': { shucked: 18000, inshell: 2250, accessAreaTrip: { shucked: 12000, inshell: 1500 } },
+                        'la-part': { shucked: 14400, inshell: 1800, accessAreaTrip: { shucked: 9600, inshell: 1200 } },
                         'la-occ': { shucked: 7200, inshell: 900 },
-                        'lagc-ifq': { shucked: 600, inshell: 75 },
+                        'lagc-ifq': { shucked: 600, inshell: 75, accessAreaTrip: { shucked: 800, inshell: 100 } },
                         'lagc-ngom': { shucked: 200, inshell: 25 },
                         'lagc-incidental': { shucked: 40, inshell: 5 }
                     },
+                    notes: 'If fishing in a scallop Access Area, use accessAreaTrip limits (Framework 39). LAGC IFQ open-area trip: 600 lb shucked; access-area trip: 800 lb shucked.',
                     violation: {
                         ifExceeds: 'VIOLATION: Possession amount exceeds permit limit (50 CFR 648.53)'
                     },
@@ -677,10 +695,15 @@ SPECIES_DATA['bluefin-tuna'] = {
                         status: 'CLOSED',
                         notes: 'General Category Commercial Fishery CLOSED January 14, 2026 (11:30 PM) through March 31, 2026. Vessels with commercial sale endorsement cannot retain, possess, or land large medium or giant Atlantic bluefin tuna (≥73" CFL).'
                     },
-                    'june-aug': {
-                        months: [6, 7, 8],
+                    'june': {
+                        months: [6],
+                        limit: { count: 3, size: '≥73" CFL (LARGE MEDIUM or GIANT)' },
+                        notes: 'June 1–30, 2026: 3 large medium or giant BFT per vessel per day/trip (unless adjusted by NOAA bulletin).'
+                    },
+                    'july-aug': {
+                        months: [7, 8],
                         limit: { count: 1, size: '≥73" CFL (LARGE MEDIUM or GIANT)' },
-                        notes: 'Fishery automatically reopens June 1, 2026. Retention limit: 1 fish greater than or equal to 73" curved fork length per vessel per day (June through August period).'
+                        notes: 'July 1–Aug 31, 2026: 1 large medium or giant BFT per vessel per day/trip on open days; Restricted Fishing Days apply (Tue/Fri/Sat = 0).'
                     },
                     'restricted-fishing-days': {
                         months: [7, 8, 9, 10, 11],
@@ -789,11 +812,11 @@ SPECIES_DATA['bluefin-tuna'] = {
                     sizeClass: '≥73" CFL',
                     limit: { count: 1, period: 'per vessel per year' },
                     status: {
-                        south: 'Closed',
-                        sne: 'Open',
-                        gom: 'Open'
+                        south: 'Closed through Dec 31, 2026',
+                        sne: 'Check NOAA bulletin',
+                        gom: 'Check NOAA bulletin'
                     },
-                    notes: 'Trophy Fishery: South: Closed, SNE: Open, GOM: Open. 1 fish ≥73" CFL per vessel per year in areas with open trophy quota.'
+                    notes: 'Southern area trophy fishery closed effective Jan 13, 2026 through Dec 31, 2026 (≥73" CFL). Other areas: verify current NOAA HMS bulletins.'
                 }
             },
             'recreational-charter-headboat': {
@@ -815,14 +838,21 @@ SPECIES_DATA['bluefin-tuna'] = {
                     sizeClass: '≥73" CFL',
                     limit: { count: 1, period: 'per vessel per year' },
                     status: {
-                        south: 'Closed',
-                        sne: 'Open',
-                        gom: 'Open'
+                        south: 'Closed through Dec 31, 2026',
+                        sne: 'Check NOAA bulletin',
+                        gom: 'Check NOAA bulletin'
                     },
-                    notes: 'Trophy Fishery: South: Closed, SNE: Open, GOM: Open. 1 fish ≥73" CFL per vessel per year in areas with open trophy quota.'
+                    notes: 'Southern area trophy fishery closed effective Jan 13, 2026 through Dec 31, 2026 (≥73" CFL). Other areas: verify current NOAA HMS bulletins.'
                 }
             }
         },
+        dataSources: [
+            {
+                title: 'BFT General Category Closure (Jan–Mar 2026)',
+                url: 'https://www.fisheries.noaa.gov/action/closure-atlantic-bluefin-tuna-general-category-commercial-fishery-8',
+                effective: '2026-01-14'
+            }
+        ],
         size: {
             minimum: 27,
             unit: 'inches (curved fork length)',
@@ -873,10 +903,16 @@ SPECIES_DATA['bluefin-tuna'] = {
                     notes: 'General Category Commercial Fishery CLOSED. Vessels with commercial sale endorsement cannot retain, possess, or land large medium or giant Atlantic bluefin tuna (≥73" CFL).',
                     cfr: '50 CFR 635.23'
                 },
-                'june-aug-2026': {
+                'june-2026': {
                     status: 'OPEN',
-                    dates: 'June 1, 2026 - August 31, 2026',
-                    notes: 'Fishery automatically reopens. Retention limit: 1 fish greater than 73" CFL per vessel per day.',
+                    dates: 'June 1, 2026 - June 30, 2026',
+                    notes: 'General Category reopens: 3 large medium or giant BFT per vessel per day/trip (unless adjusted).',
+                    cfr: '50 CFR 635.23'
+                },
+                'july-aug-2026': {
+                    status: 'OPEN',
+                    dates: 'July 1, 2026 - August 31, 2026',
+                    notes: '1 large medium or giant BFT per vessel per day/trip on open days; RFDs apply.',
                     cfr: '50 CFR 635.23'
                 }
             },
@@ -2302,6 +2338,13 @@ SPECIES_DATA['swordfish'] = {
     imagePath: 'images/fish/Swordfish.webp', // Path to actual fish image file
     color: '#ef4444',
     regulations: {
+        dataSources: [
+            {
+                title: 'HMS Recreational Compliance Guide (2025)',
+                url: 'https://www.fisheries.noaa.gov/atlantic-highly-migratory-species/recreational-atlantic-shark-fishery-statuses-minimum-sizes-and',
+                effective: '2025-01-01'
+            }
+        ],
         permits: {
             'commercial-general': {
                 name: 'Atlantic HMS Commercial Permit - General Category',
@@ -2399,14 +2442,14 @@ SPECIES_DATA['swordfish'] = {
             'recreational': {
                 name: 'Recreational',
                 limit: { count: 1, unit: 'fish' },
-                cfr: '50 CFR 635.23',
-                notes: '1 fish per person per day. Minimum size: 47" lower jaw fork length. Must be reported within 24 hours.'
+                cfr: '50 CFR 635.22',
+                notes: '1 North Atlantic swordfish per person per day (angling permit). Minimum 47" LJFL. Charter: up to 6/vessel/trip. Report within 24 hours.'
             },
             'recreational-charter-headboat': {
                 name: 'Recreational - Charter/Headboat',
-                limit: { count: 1, unit: 'fish' },
-                cfr: '50 CFR 635.23',
-                notes: '1 fish per person per day. Minimum size: 47" lower jaw fork length.'
+                limit: { count: 6, unit: 'fish per vessel per trip' },
+                cfr: '50 CFR 635.22',
+                notes: 'For-hire: 1 swordfish per paying passenger, up to 6 per vessel per trip. Minimum 47" LJFL.'
             }
         },
         size: {
@@ -4456,16 +4499,23 @@ SPECIES_DATA['sandbar-shark'] = {
             prohibited: {
                 required: true,
                 cfr: '50 CFR 635.23',
-                notes: 'PROHIBITED SPECIES - Must be released immediately, no retention allowed'
+                notes: 'PROHIBITED SPECIES - Must be released immediately with minimal injury. NOAA recreational prohibited shark list (2025).'
             }
         },
+        dataSources: [
+            {
+                title: 'Recreational Atlantic Shark Statuses',
+                url: 'https://www.fisheries.noaa.gov/atlantic-highly-migratory-species/recreational-atlantic-shark-fishery-statuses-minimum-sizes-and',
+                effective: '2025-01-01'
+            }
+        ],
         assessmentQuestions: {
             prohibitedSpeciesCheck: {
                 question: 'Is sandbar shark on board?',
                 field: 'hasShark',
                 required: true,
                 type: 'boolean',
-                notes: 'Sandbar shark is PROHIBITED from retention. Listed as prohibited species under 50 CFR 635.23.',
+                notes: 'Sandbar shark is PROHIBITED from retention. Listed on NOAA recreational prohibited shark list.',
                 violation: {
                     ifTrue: 'VIOLATION: Sandbar shark is PROHIBITED from retention. Must be released immediately. No retention allowed (50 CFR 635.23)'
                 },
@@ -6484,22 +6534,29 @@ SPECIES_DATA['blacktip-shark'] = {
             },
             'recreational': {
                 name: 'Recreational',
-                limit: { count: 1, unit: 'fish' },
-                cfr: '50 CFR 635.23',
-                notes: '1 shark per vessel per trip from Atlantic aggregated large coastal shark (LCS) management group'
+                limit: { count: 1, unit: 'fish per vessel per trip' },
+                cfr: '50 CFR 635.22',
+                notes: '1 shark per vessel per trip from LCS group (combined with other LCS species). Minimum 54" FL. Cannot retain if tunas/billfish/swordfish on board.'
             }
         },
+        dataSources: [
+            {
+                title: 'HMS Recreational Compliance Guide (2025)',
+                url: 'https://www.fisheries.noaa.gov/s3/2025-04/HMS-Recreational-Compliance-Guide-2025-Final.pdf',
+                effective: '2025-04-01'
+            }
+        ],
         size: {
-            minimum: null,
-            unit: 'varies',
-            cfr: '50 CFR 635.23',
-            notes: 'Check current size requirements for LCS'
+            minimum: 54,
+            unit: 'inches (fork length)',
+            cfr: '50 CFR 635.20',
+            notes: 'Minimum 54" fork length for retained sharks in LCS group (blacktip).'
         },
         gear: {
             'rod-reel': {
                 name: 'Rod and Reel',
                 cfr: '50 CFR 635.21',
-                notes: 'Non-offset, non-stainless steel circle hooks required'
+                notes: 'Non-offset, corrodible circle hooks required when retaining sharks'
             }
         },
         assessmentQuestions: {
