@@ -72,13 +72,23 @@ const SPECIES_DATA = {
                     title: 'NOAA 2025 Summer Flounder Specifications',
                     url: 'https://www.fisheries.noaa.gov/bulletin/2025-specifications-summer-flounder-scup-black-sea-bass-and-bluefish-fisheries',
                     effective: '2025-01-01'
+                },
+                {
+                    title: 'NOAA 2026 Specifications (Summer Flounder, Scup, BSB, Bluefish)',
+                    url: 'https://www.fisheries.noaa.gov/action/2026-and-projected-2027-summer-flounder-scup-black-sea-bass-and-bluefish-specifications',
+                    effective: '2026-02-19'
+                },
+                {
+                    title: '2026–2027 Recreational Management Measures (conservation equivalency)',
+                    url: 'https://www.federalregister.gov/documents/2026/04/30/2026-08409/fisheries-of-the-northeastern-united-states-2026-and-2027-summer-flounder-scup-and-black-sea-bass',
+                    effective: '2026-04-30'
                 }
             ],
             seasons: {
                 federal: {
                     open: 'Seasonal with closures',
                     cfr: '50 CFR 648.105',
-                    notes: '2025 specs: no change to federal possession measures (RHL 6.35M lb). State seasons/bags may differ. Verify 2026+ specs separately.'
+                    notes: '2026 specs (Feb 19, 2026): commercial quota 12.78M lb; recreational RHL 8.79M lb. Federal recreational bag/size/season waived—conservation equivalency; state measures apply (Apr 30, 2026 rule).'
                 },
                 state: {
                     varies: true,
@@ -306,7 +316,9 @@ const SPECIES_DATA = {
                 'lagc-ifq': {
                     name: 'LAGC IFQ',
                     limit: { shucked: 600, inshell: 75 },
-                    cfr: '50 CFR 648.53'
+                    accessAreaTrip: { shucked: 800, inshell: 100 },
+                    cfr: '50 CFR 648.53',
+                    notes: 'Open-area trip: 600 lb shucked. Access Area trip: 800 lb shucked (Framework 39).'
                 },
                 'lagc-ngom': {
                     name: 'LAGC NGOM',
@@ -1325,14 +1337,14 @@ SPECIES_DATA['yellowfin-tuna'] = {
             'recreational': {
                 name: 'Recreational - HMS Angler',
                 limit: { count: 3, unit: 'fish per person per day' },
-                cfr: '50 CFR 635.23',
-                notes: '3 per day per person. No minimum size limit.'
+                cfr: '50 CFR 635.22',
+                notes: '3 per person per day (BAYS). 27" CFL minimum.'
             },
             'recreational-charter-headboat': {
                 name: 'Recreational - HMS Charter/Headboat',
                 limit: { count: 3, unit: 'fish per person per day' },
-                cfr: '50 CFR 635.23',
-                notes: '3 per day per person. No minimum size limit.'
+                cfr: '50 CFR 635.22',
+                notes: '3 per person per day (BAYS). 27" CFL minimum.'
             }
         },
         size: {
@@ -1353,6 +1365,13 @@ SPECIES_DATA['yellowfin-tuna'] = {
                 notes: 'Handline gear authorized'
             }
         },
+        dataSources: [
+            {
+                title: 'HMS Recreational Compliance Guide (2025)',
+                url: 'https://www.fisheries.noaa.gov/s3/2025-04/HMS-Recreational-Compliance-Guide-2025-Final.pdf',
+                effective: '2025-04-01'
+            }
+        ],
         assessmentQuestions: {
             permitType: {
                 question: 'What type of HMS permit does this vessel have?',
@@ -1604,15 +1623,15 @@ SPECIES_DATA['bigeye-tuna'] = {
                 name: 'Recreational - HMS Angler',
                 limit: null,
                 unit: 'No Limit',
-                cfr: '50 CFR 635.23',
-                notes: 'No Limit'
+                cfr: '50 CFR 635.22',
+                notes: 'No federal recreational retention limit for bigeye tuna (BAYS). 27" CFL minimum if retained.'
             },
             'recreational-charter-headboat': {
                 name: 'Recreational - HMS Charter/Headboat',
                 limit: null,
                 unit: 'No Limit',
-                cfr: '50 CFR 635.23',
-                notes: 'No Limit'
+                cfr: '50 CFR 635.22',
+                notes: 'No federal recreational retention limit for bigeye tuna (BAYS). 27" CFL minimum if retained.'
             }
         },
         size: {
@@ -1633,6 +1652,13 @@ SPECIES_DATA['bigeye-tuna'] = {
                 notes: 'Handline gear authorized'
             }
         },
+        dataSources: [
+            {
+                title: 'HMS Recreational Compliance Guide (2025)',
+                url: 'https://www.fisheries.noaa.gov/s3/2025-04/HMS-Recreational-Compliance-Guide-2025-Final.pdf',
+                effective: '2025-04-01'
+            }
+        ],
         assessmentQuestions: {
             permitType: {
                 question: 'What type of HMS permit does this vessel have?',
@@ -1884,15 +1910,15 @@ SPECIES_DATA['skipjack-tuna'] = {
                 name: 'Recreational - HMS Angler',
                 limit: null,
                 unit: 'No Limit',
-                cfr: '50 CFR 635.23',
-                notes: 'No Limit'
+                cfr: '50 CFR 635.22',
+                notes: 'No federal recreational retention limit for skipjack tuna (BAYS).'
             },
             'recreational-charter-headboat': {
                 name: 'Recreational - HMS Charter/Headboat',
                 limit: null,
                 unit: 'No Limit',
-                cfr: '50 CFR 635.23',
-                notes: 'No Limit'
+                cfr: '50 CFR 635.22',
+                notes: 'No federal recreational retention limit for skipjack tuna (BAYS).'
             }
         },
         size: {
@@ -1913,6 +1939,13 @@ SPECIES_DATA['skipjack-tuna'] = {
                 notes: 'Handline gear authorized'
             }
         },
+        dataSources: [
+            {
+                title: 'HMS Recreational Compliance Guide (2025)',
+                url: 'https://www.fisheries.noaa.gov/s3/2025-04/HMS-Recreational-Compliance-Guide-2025-Final.pdf',
+                effective: '2025-04-01'
+            }
+        ],
         assessmentQuestions: {
             permitType: {
                 question: 'What type of HMS permit does this vessel have?',
@@ -2159,15 +2192,17 @@ SPECIES_DATA['albacore-tuna'] = {
             },
             'recreational': {
                 name: 'Recreational',
-                limit: { count: 3, unit: 'fish' },
-                cfr: '50 CFR 635.23',
-                notes: '3 fish per person per day. No minimum size limit.'
+                limit: null,
+                unit: 'No Limit',
+                cfr: '50 CFR 635.22',
+                notes: 'No federal recreational retention limit for albacore tuna (BAYS).'
             },
             'recreational-charter-headboat': {
                 name: 'Recreational - Charter/Headboat',
-                limit: { count: 3, unit: 'fish' },
-                cfr: '50 CFR 635.23',
-                notes: '3 fish per person per day. No minimum size limit.'
+                limit: null,
+                unit: 'No Limit',
+                cfr: '50 CFR 635.22',
+                notes: 'No federal recreational retention limit for albacore tuna (BAYS).'
             }
         },
         size: {
@@ -2188,6 +2223,13 @@ SPECIES_DATA['albacore-tuna'] = {
                 notes: 'Handline gear authorized'
             }
         },
+        dataSources: [
+            {
+                title: 'HMS Recreational Compliance Guide (2025)',
+                url: 'https://www.fisheries.noaa.gov/s3/2025-04/HMS-Recreational-Compliance-Guide-2025-Final.pdf',
+                effective: '2025-04-01'
+            }
+        ],
         assessmentQuestions: {
             permitType: {
                 question: 'What type of HMS permit does this vessel have?',
@@ -7102,20 +7144,32 @@ SPECIES_DATA['great-hammerhead-shark'] = {
                 limit: null, // Subject to quota
                 unit: 'fish or lbs',
                 cfr: '50 CFR 635.23',
-                notes: 'Hammerhead shark - retention allowed subject to quota. Check current regulations.'
+                notes: 'Hammerhead management group — retention subject to commercial quota. Prohibited in U.S. Caribbean.'
             },
             'recreational': {
                 name: 'Recreational',
-                limit: { count: 1, unit: 'fish' },
-                cfr: '50 CFR 635.23',
-                notes: '1 shark per vessel per trip from hammerhead shark management group'
+                limit: { count: 1, unit: 'fish per vessel per trip' },
+                cfr: '50 CFR 635.22',
+                notes: '1 shark per vessel per trip (only one from allowable species list). 78" FL minimum. PROHIBITED in U.S. Caribbean. Cannot retain if tuna, swordfish, or billfish on board.'
             }
         },
+        dataSources: [
+            {
+                title: 'HMS Recreational Compliance Guide (2025)',
+                url: 'https://www.fisheries.noaa.gov/s3/2025-04/HMS-Recreational-Compliance-Guide-2025-Final.pdf',
+                effective: '2025-04-01'
+            },
+            {
+                title: 'Hammerhead retention prohibition (U.S. Caribbean)',
+                url: 'https://www.fisheries.noaa.gov/action/retention-prohibition-oceanic-whitetip-sharks-us-atlantic-waters-and-hammerhead-sharks-us',
+                effective: '2024-02-02'
+            }
+        ],
         size: {
-            minimum: null,
-            unit: 'varies',
-            cfr: '50 CFR 635.23',
-            notes: 'Check current size requirements for hammerhead sharks'
+            minimum: 78,
+            unit: 'inches (fork length)',
+            cfr: '50 CFR 635.20',
+            notes: 'Minimum 78" fork length for great, smooth, and scalloped hammerhead sharks.'
         },
         gear: {
             'rod-reel': {
@@ -7154,13 +7208,13 @@ SPECIES_DATA['great-hammerhead-shark'] = {
                 autoCheck: true,
                 limits: {
                     'commercial': null, // Subject to quota
-                    'recreational': 1 // 1 shark per vessel per trip from hammerhead management group
+                    'recreational': 1 // 1 shark per vessel per trip from allowable species list
                 },
-                notes: 'Commercial limits subject to quota - check current regulations. Recreational: 1 shark per vessel per trip from hammerhead shark management group.',
+                notes: 'Recreational: 1 shark per vessel per trip (78" FL min). Prohibited in U.S. Caribbean; cannot retain with tuna/swordfish/billfish on board.',
                 violation: {
-                    ifExceeds: 'VIOLATION: Possession amount exceeds permit limit (50 CFR 635.23)'
+                    ifExceeds: 'VIOLATION: Possession amount exceeds permit limit (50 CFR 635.22)'
                 },
-                cfr: '50 CFR 635.23'
+                cfr: '50 CFR 635.22'
             },
             authorizedGear: {
                 question: 'What gear is being used?',
@@ -7215,20 +7269,32 @@ SPECIES_DATA['scalloped-hammerhead-shark'] = {
                 limit: null, // Subject to quota
                 unit: 'fish or lbs',
                 cfr: '50 CFR 635.23',
-                notes: 'Hammerhead shark - retention allowed subject to quota. Check current regulations.'
+                notes: 'Hammerhead management group — retention subject to commercial quota. Prohibited in U.S. Caribbean.'
             },
             'recreational': {
                 name: 'Recreational',
-                limit: { count: 1, unit: 'fish' },
-                cfr: '50 CFR 635.23',
-                notes: '1 shark per vessel per trip from hammerhead shark management group'
+                limit: { count: 1, unit: 'fish per vessel per trip' },
+                cfr: '50 CFR 635.22',
+                notes: '1 shark per vessel per trip (only one from allowable species list). 78" FL minimum. PROHIBITED in U.S. Caribbean. Cannot retain if tuna, swordfish, or billfish on board.'
             }
         },
+        dataSources: [
+            {
+                title: 'HMS Recreational Compliance Guide (2025)',
+                url: 'https://www.fisheries.noaa.gov/s3/2025-04/HMS-Recreational-Compliance-Guide-2025-Final.pdf',
+                effective: '2025-04-01'
+            },
+            {
+                title: 'Hammerhead retention prohibition (U.S. Caribbean)',
+                url: 'https://www.fisheries.noaa.gov/action/retention-prohibition-oceanic-whitetip-sharks-us-atlantic-waters-and-hammerhead-sharks-us',
+                effective: '2024-02-02'
+            }
+        ],
         size: {
-            minimum: null,
-            unit: 'varies',
-            cfr: '50 CFR 635.23',
-            notes: 'Check current size requirements for hammerhead sharks'
+            minimum: 78,
+            unit: 'inches (fork length)',
+            cfr: '50 CFR 635.20',
+            notes: 'Minimum 78" fork length for great, smooth, and scalloped hammerhead sharks.'
         },
         gear: {
             'rod-reel': {
@@ -7267,13 +7333,13 @@ SPECIES_DATA['scalloped-hammerhead-shark'] = {
                 autoCheck: true,
                 limits: {
                     'commercial': null, // Subject to quota
-                    'recreational': 1 // 1 shark per vessel per trip from hammerhead management group
+                    'recreational': 1 // 1 shark per vessel per trip from allowable species list
                 },
-                notes: 'Commercial limits subject to quota - check current regulations. Recreational: 1 shark per vessel per trip from hammerhead shark management group.',
+                notes: 'Recreational: 1 shark per vessel per trip (78" FL min). Prohibited in U.S. Caribbean; cannot retain with tuna/swordfish/billfish on board.',
                 violation: {
-                    ifExceeds: 'VIOLATION: Possession amount exceeds permit limit (50 CFR 635.23)'
+                    ifExceeds: 'VIOLATION: Possession amount exceeds permit limit (50 CFR 635.22)'
                 },
-                cfr: '50 CFR 635.23'
+                cfr: '50 CFR 635.22'
             },
             authorizedGear: {
                 question: 'What gear is being used?',
@@ -7328,20 +7394,32 @@ SPECIES_DATA['smooth-hammerhead-shark'] = {
                 limit: null, // Subject to quota
                 unit: 'fish or lbs',
                 cfr: '50 CFR 635.23',
-                notes: 'Hammerhead shark - retention allowed subject to quota. Check current regulations.'
+                notes: 'Hammerhead management group — retention subject to commercial quota. Prohibited in U.S. Caribbean.'
             },
             'recreational': {
                 name: 'Recreational',
-                limit: { count: 1, unit: 'fish' },
-                cfr: '50 CFR 635.23',
-                notes: '1 shark per vessel per trip from hammerhead shark management group'
+                limit: { count: 1, unit: 'fish per vessel per trip' },
+                cfr: '50 CFR 635.22',
+                notes: '1 shark per vessel per trip (only one from allowable species list). 78" FL minimum. PROHIBITED in U.S. Caribbean. Cannot retain if tuna, swordfish, or billfish on board.'
             }
         },
+        dataSources: [
+            {
+                title: 'HMS Recreational Compliance Guide (2025)',
+                url: 'https://www.fisheries.noaa.gov/s3/2025-04/HMS-Recreational-Compliance-Guide-2025-Final.pdf',
+                effective: '2025-04-01'
+            },
+            {
+                title: 'Hammerhead retention prohibition (U.S. Caribbean)',
+                url: 'https://www.fisheries.noaa.gov/action/retention-prohibition-oceanic-whitetip-sharks-us-atlantic-waters-and-hammerhead-sharks-us',
+                effective: '2024-02-02'
+            }
+        ],
         size: {
-            minimum: null,
-            unit: 'varies',
-            cfr: '50 CFR 635.23',
-            notes: 'Check current size requirements for hammerhead sharks'
+            minimum: 78,
+            unit: 'inches (fork length)',
+            cfr: '50 CFR 635.20',
+            notes: 'Minimum 78" fork length for great, smooth, and scalloped hammerhead sharks.'
         },
         gear: {
             'rod-reel': {
@@ -7380,13 +7458,13 @@ SPECIES_DATA['smooth-hammerhead-shark'] = {
                 autoCheck: true,
                 limits: {
                     'commercial': null, // Subject to quota
-                    'recreational': 1 // 1 shark per vessel per trip from hammerhead management group
+                    'recreational': 1 // 1 shark per vessel per trip from allowable species list
                 },
-                notes: 'Commercial limits subject to quota - check current regulations. Recreational: 1 shark per vessel per trip from hammerhead shark management group.',
+                notes: 'Recreational: 1 shark per vessel per trip (78" FL min). Prohibited in U.S. Caribbean; cannot retain with tuna/swordfish/billfish on board.',
                 violation: {
-                    ifExceeds: 'VIOLATION: Possession amount exceeds permit limit (50 CFR 635.23)'
+                    ifExceeds: 'VIOLATION: Possession amount exceeds permit limit (50 CFR 635.22)'
                 },
-                cfr: '50 CFR 635.23'
+                cfr: '50 CFR 635.22'
             },
             authorizedGear: {
                 question: 'What gear is being used?',

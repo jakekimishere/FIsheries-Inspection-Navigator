@@ -2110,6 +2110,29 @@ function populateScallopAdditionalChecks(speciesId, additionalContent) {
                 </button>
             </div>
         </div>
+        
+        <!-- Fishing Area -->
+        <div class="assessment-substep">
+            <h4>Fishing Area</h4>
+            <p class="question">What area was the vessel fishing in?</p>
+            <div class="info-note">
+                Access Area trips use lower per-trip possession limits (Framework 39). Open-area limits apply otherwise.
+            </div>
+            <div class="choice-group small">
+                <button class="choice-btn" data-field="fishing-area" data-value="open-area" onclick="selectChoice('${speciesId}', this)">
+                    Open Area
+                </button>
+                <button class="choice-btn" data-field="fishing-area" data-value="access-area" onclick="selectChoice('${speciesId}', this)">
+                    Access Area
+                </button>
+                <button class="choice-btn" data-field="fishing-area" data-value="ngom" onclick="selectChoice('${speciesId}', this)">
+                    NGOM
+                </button>
+                <button class="choice-btn" data-field="fishing-area" data-value="closed-area" onclick="selectChoice('${speciesId}', this)">
+                    Closed Area
+                </button>
+            </div>
+        </div>
     `;
 }
 // Show grouped assessment step
@@ -4074,13 +4097,23 @@ function checkScallopPossession(species, speciesData) {
     const regs = species.regulations;
     const permitType = speciesData['permit-type'];
     
+    const fishingArea = speciesData.fishingArea || speciesData['fishing-area'];
+    if (fishingArea === 'closed-area') {
+        violations.push('Scallop fishing prohibited in closed areas (50 CFR 648.60)');
+        return violations;
+    }
+
     if (permitType && regs.possession[permitType]) {
-        const limits = regs.possession[permitType].limit;
-        const cfr = regs.possession[permitType].cfr;
+        const possEntry = regs.possession[permitType];
+        let limits = possEntry.limit;
+        if (fishingArea === 'access-area' && possEntry.accessAreaTrip) {
+            limits = possEntry.accessAreaTrip;
+        }
+        const cfr = possEntry.cfr;
         
         // Use standardized amount (converted to pounds shucked equivalent)
         const possessionAmount = speciesData.possessionAmountStandard || speciesData.possessionAmount || 0;
-        const possessionType = speciesData.possessionType || 'shucked';
+        const possessionType = speciesData.possessionType || speciesData['possession-type'] || 'shucked';
         
         if (limits) {
             let exceeded = false;
@@ -4106,7 +4139,8 @@ function checkScallopPossession(species, speciesData) {
             }
             
             if (exceeded) {
-                violations.push(`Scallop possession exceeds limit: ${limitText}${cfr ? ` (${cfr})` : ''}`);
+                const areaNote = fishingArea === 'access-area' ? ' (access area trip limit)' : '';
+                violations.push(`Scallop possession exceeds limit: ${limitText}${areaNote}${cfr ? ` (${cfr})` : ''}`);
             }
         }
     }

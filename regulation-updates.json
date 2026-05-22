@@ -12,6 +12,28 @@
   "changes": [
     {
       "date": "2026-05-21",
+      "title": "Tier B regulation refresh",
+      "description": "2026 summer flounder specifications and conservation equivalency notes; BAYS tuna (yellowfin/bigeye/skipjack/albacore) aligned with HMS 2025 compliance guide; hammerhead sharks (78\" FL, 635.22, Caribbean prohibition); scallop access-area possession checks in assessment engine.",
+      "affectedSpecies": [
+        "summer-flounder",
+        "yellowfin-tuna",
+        "bigeye-tuna",
+        "skipjack-tuna",
+        "albacore-tuna",
+        "great-hammerhead-shark",
+        "scalloped-hammerhead-shark",
+        "smooth-hammerhead-shark",
+        "atlantic-sea-scallop"
+      ],
+      "sources": [
+        "https://www.fisheries.noaa.gov/action/2026-and-projected-2027-summer-flounder-scup-black-sea-bass-and-bluefish-specifications",
+        "https://www.federalregister.gov/documents/2026/04/30/2026-08409/fisheries-of-the-northeastern-united-states-2026-and-2027-summer-flounder-scup-and-black-sea-bass",
+        "https://www.fisheries.noaa.gov/s3/2025-04/HMS-Recreational-Compliance-Guide-2025-Final.pdf",
+        "https://www.fisheries.noaa.gov/action/retention-prohibition-oceanic-whitetip-sharks-us-atlantic-waters-and-hammerhead-sharks-us"
+      ]
+    },
+    {
+      "date": "2026-05-21",
       "title": "Tier A regulation refresh",
       "description": "Updated Tier A species (summer flounder, scallop, bluefin tuna, swordfish, sandbar/blacktip sharks) from NOAA bulletins and Framework 39. Bluefin June/July retention limits split; scallop access area trip limits; swordfish charter limits.",
       "affectedSpecies": [
