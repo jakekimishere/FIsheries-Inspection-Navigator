@@ -16,6 +16,37 @@ class Navigation {
         });
     }
 
+    hideSpeciesSelection() {
+        const step0 = document.getElementById('step-0');
+        if (step0) {
+            step0.classList.remove('active');
+            step0.style.display = 'none';
+        }
+    }
+
+    showSpeciesSelection() {
+        const homepage = document.getElementById('step-homepage');
+        if (homepage) {
+            homepage.classList.remove('active');
+            homepage.style.display = 'none';
+        }
+        const step0 = document.getElementById('step-0');
+        if (step0) {
+            step0.classList.add('active');
+            step0.style.display = 'block';
+        }
+    }
+
+    scrollToAssessment() {
+        requestAnimationFrame(() => {
+            const target = document.querySelector('.grouped-assessment[style*="block"]')
+                || document.getElementById('assessment-sections');
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    }
+
     // Show a specific step
     showStep(step) {
         document.querySelectorAll('.step-section').forEach(section => {
@@ -47,11 +78,7 @@ class Navigation {
             const homepage = document.getElementById('step-homepage');
             if (homepage) homepage.classList.add('active');
         } else if (step === 0) {
-            const speciesStep = document.getElementById('step-0');
-            if (speciesStep) {
-                speciesStep.classList.add('active');
-                speciesStep.style.display = 'block';
-            }
+            this.showSpeciesSelection();
             document.querySelectorAll('.grouped-assessment').forEach(el => {
                 el.classList.remove('active');
                 el.style.display = 'none';
@@ -66,6 +93,7 @@ class Navigation {
                 resultsSection.style.display = 'none';
             }
         } else if (step === 1) {
+            this.hideSpeciesSelection();
             // Step 1 (vessel info) removed - skip directly to assessment
             // Generate grouped assessment steps
             if (this.state.selectedSpecies.length > 0) {
@@ -90,8 +118,10 @@ class Navigation {
                 } else {
                     this.showGroupedStep('permits');
                 }
+                this.scrollToAssessment();
             }
         } else if (typeof getReportStepNumber === 'function' && step >= 2 && step < getReportStepNumber()) {
+            this.hideSpeciesSelection();
             const stepOrder = typeof getAssessmentStepOrder === 'function'
                 ? getAssessmentStepOrder()
                 : (hasMultispecies
@@ -106,6 +136,7 @@ class Navigation {
             (hasMultispecies && step === 7) ||
             (!hasMultispecies && step === 6)
         ) {
+            this.hideSpeciesSelection();
             // Results - hide all grouped assessment steps first
             document.querySelectorAll('.grouped-assessment').forEach(groupedStep => {
                 groupedStep.style.display = 'none';

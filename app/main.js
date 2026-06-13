@@ -152,6 +152,12 @@ document.addEventListener('DOMContentLoaded', () => {
             showStep(1);
         }
     };
+
+    window.nextStep = function(fromStep) {
+        if (fromStep === 0) {
+            window.proceedToAssessment();
+        }
+    };
 });
 
 function filterSpeciesGrid(searchTerm) {

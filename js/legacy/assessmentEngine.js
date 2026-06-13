@@ -465,9 +465,6 @@ function createSpeciesCard(speciesId, species) {
                 </div>
                 <img src="${fishImage}" alt="${species.name}" class="species-image" ${loadingAttr} ${decodingAttr} onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEyMCIgZmlsbD0iI2Y1ZjVmNSIgcng9IjgiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0cHgiIGZpbGw9IiM3MzYzNDciIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5JbWFnZQ==';">
                 <div class="species-name">${species.name}</div>
-                ${typeof SpeciesPolicyAdvisor !== 'undefined'
-                    ? SpeciesPolicyAdvisor.renderBadgeHtml(SpeciesPolicyAdvisor.getProfile(speciesId, species))
-                    : '<div class="species-badge">Available</div>'}
             `;
         }
     } catch (error) {
@@ -691,6 +688,11 @@ function showStep(step) {
             resultsSection.style.display = 'none';
         }
     } else if (step === 1) {
+        const step0Hide = document.getElementById('step-0');
+        if (step0Hide) {
+            step0Hide.classList.remove('active');
+            step0Hide.style.display = 'none';
+        }
         // Step 1 (vessel info) removed - skip directly to assessment
         // Generate grouped assessment steps
         if (selectedSpecies.length > 0) {
