@@ -101,6 +101,15 @@ class AssessmentSteps {
             section.id = 'grouped-vessel-classification';
             
             const multispData = NORTHEAST_MULTISPECIES_DATA;
+            const multispeciesSelected = this.state.selectedSpecies.filter(id =>
+                typeof isMultispecies === 'function' && isMultispecies(id)
+            );
+            const multispeciesPolicyHtml = multispeciesSelected.map(speciesId => {
+                if (typeof SpeciesPolicyAdvisor === 'undefined' || !SpeciesPolicyAdvisor.renderPolicyContextBlock) {
+                    return '';
+                }
+                return SpeciesPolicyAdvisor.renderPolicyContextBlock(speciesId, 'vessel-classification');
+            }).join('');
             
             let html = `
                 <div class="grouped-header">
@@ -109,6 +118,8 @@ class AssessmentSteps {
                 </div>
                 
                 ${this.generateQuickReference('vessel-classification')}
+                
+                ${multispeciesPolicyHtml}
                 
                 <div class="vessel-classification-group">
                     <h3>Vessel Enrollment Status</h3>

@@ -377,7 +377,8 @@ const SpeciesPolicyAdvisor = (function () {
         possession: /possession|limit|\blb\b|per person|per trip|recreational|commercial|combined|prohibited|retention|unlimited|not to exceed|on board|EEZ|fish per|bag|quota|ACE|trip limit/i,
         'size-gear': /minimum size|mesh|gear|fork length|carcass|head and fins|TED|≤|≥|″|inch|CFL|curved|state bag|state size|season|size limit|head-on|gillnet|trawl/i,
         'vessel-requirements': /VMS|observer|transfer at sea|reporting|TDD|declar|at-sea/i,
-        'dynamic-assessment': /closed|area|transit|reserve|RGA|GRA|zone|EEZ|management unit|chart|corridor|coordinates|closure|TED|observer|sector|common pool|multispecies/i
+        'dynamic-assessment': /closed|area|transit|reserve|RGA|GRA|zone|EEZ|management unit|chart|corridor|coordinates|closure|TED|observer|sector|common pool|multispecies/i,
+        'vessel-classification': /sector|common pool|ACE|DAS|LOA|multispecies|trip limit|Cat [A-Z]|operator permit|limited access|open access/i
     };
 
     const META_BULLET = /^(Data in FIN|Policy verified against|Source:|No detailed federal summary|Check 50 CFR)/i;
@@ -491,9 +492,24 @@ const SpeciesPolicyAdvisor = (function () {
                 if (profile.headline) return [profile.headline];
                 return isDedicatedPolicyProfile(profile) ? actionable.slice(0, 2) : [];
             }
+            case 'vessel-classification': {
+                const nms = filterBulletsByStep(actionable, 'vessel-classification');
+                if (nms.length) return nms;
+                if (isMultispeciesSpecies(speciesId) && profile.headline) {
+                    return [profile.headline, ...actionable.slice(0, 2)];
+                }
+                return [];
+            }
             default:
                 return [];
         }
+    }
+
+    function isMultispeciesSpecies(speciesId) {
+        if (typeof isMultispecies === 'function') {
+            return isMultispecies(speciesId);
+        }
+        return false;
     }
 
     function getBulletsForStep(speciesId, stepName) {
@@ -509,7 +525,7 @@ const SpeciesPolicyAdvisor = (function () {
     function appendPolicyQuickReference(requirements, stepName, speciesIds) {
         if (!speciesIds?.length || !requirements) return;
         speciesIds.forEach(speciesId => {
-            if (typeof isMultispecies === 'function' && isMultispecies(speciesId)) return;
+            if (speciesId === 'northeast-multispecies') return;
             const species = SPECIES_DATA?.[speciesId];
             if (!species) return;
             const items = getBulletsForStep(speciesId, stepName);

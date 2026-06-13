@@ -9,6 +9,7 @@
     "validate:violations": "node scripts/validate-violation-coverage.js",
     "validate:schema": "node scripts/validate-species-schema.js",
     "test:smoke": "node scripts/smoke-scenarios.js",
+    "pages:check": "node scripts/check-pages-sync.js",
     "test": "npm run validate && npm run test:smoke"
   }
 }

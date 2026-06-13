@@ -27,11 +27,12 @@ function createGroupedPermitsSection(container) {
     const otherSpeciesSelected = selectedSpecies.filter(id => !isMultispecies(id));
     
     // Handle multispecies permit (if any multispecies are selected)
-    if (multispeciesSelected.length > 0) {
-        html += `
+        if (multispeciesSelected.length > 0) {
+            html += `
             <div class="species-permit-group multispecies-group" data-species="multispecies">
                 <h3>Northeast Multispecies Permit</h3>
                 <p class="species-list">Covers: ${multispeciesSelected.map(id => SPECIES_DATA[id].name).join(', ')}</p>
+                ${multispeciesSelected.map(id => speciesPolicyContextHtml(id, 'permits')).join('')}
                 <p class="question">Does the vessel possess a valid Northeast Multispecies permit?</p>
                 <div class="choice-group small">
                     <button class="choice-btn" data-species="multispecies" data-field="has-permit" data-value="yes" onclick="selectGroupedChoice('multispecies', this)">

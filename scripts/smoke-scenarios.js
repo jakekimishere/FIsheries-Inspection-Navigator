@@ -703,6 +703,8 @@ function main() {
         assert('all species possession step policy', missingPossession.length === 0, missingPossession.join(', '));
         assert('all species size-gear step policy', missingSizeGear.length === 0, missingSizeGear.join(', '));
         assert('all location checklist species have area policy', missingLocation.length === 0, missingLocation.join(', '));
+        assert('NMS cod permits step policy', advisor.getBulletsForStep('atlantic-cod', 'permits').length > 0);
+        assert('NMS cod vessel-classification policy', advisor.getBulletsForStep('atlantic-cod', 'vessel-classification').length > 0);
 
         // Grouped assessment path (speciesViolationChecks)
         const sf = SPECIES_DATA['summer-flounder'];
