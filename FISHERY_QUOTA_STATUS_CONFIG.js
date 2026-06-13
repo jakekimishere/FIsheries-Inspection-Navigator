@@ -48,6 +48,10 @@ const FISHERY_QUOTA_STATUS = {
         cfr: '50 CFR 622.382',
         recreational: { count: 15, unit: 'fish per person per day', notes: 'Atlantic migratory group — 15 fish/person/day.' }
     },
+    'atlantic-mackerel': {
+        cfr: '50 CFR 648.24',
+        recreational: { count: 25, unit: 'fish per person per day', notes: '25 fish/person; squid/chub/butterfish unlimited.' }
+    },
     'tautog': {
         cfr: '50 CFR 648.163',
         recreational: { count: null, notes: 'Federal recreational bag limit waived; state conservation equivalency measures apply.' },
@@ -222,6 +226,42 @@ function getCommercialPossessionLimit(speciesId, permitType, speciesData) {
     }
     if (speciesId === 'spanish-mackerel' && permitType === 'recreational') {
         return { count: 15, prohibited: false };
+    }
+
+    if (speciesId === 'atlantic-sea-scallop' && typeof getScallop648PossessionLimit === 'function') {
+        const sc = getScallop648PossessionLimit(permitType, speciesData);
+        if (sc?.count != null || sc?.prohibited) {
+            return {
+                count: sc.count,
+                prohibited: !!sc.prohibited,
+                unit: sc.unit,
+                message: sc.message || sc.notes || null
+            };
+        }
+    }
+
+    if (typeof getSurfClam648PossessionLimit === 'function' && (speciesId === 'surf-clam' || speciesId === 'ocean-quahog')) {
+        const clam = getSurfClam648PossessionLimit(speciesId, permitType, speciesData);
+        if (clam?.count != null || clam?.prohibited) {
+            return {
+                count: clam.count,
+                prohibited: !!clam.prohibited,
+                unit: clam.unit,
+                message: clam.notes || null
+            };
+        }
+    }
+
+    if (typeof getSmb648PossessionLimit === 'function') {
+        const smb = getSmb648PossessionLimit(speciesId, permitType, speciesData);
+        if (smb?.count != null || smb?.prohibited) {
+            return {
+                count: smb.count,
+                prohibited: !!smb.prohibited,
+                unit: smb.unit,
+                message: smb.notes || smb.message || null
+            };
+        }
     }
 
     const recCfg = FISHERY_QUOTA_STATUS[speciesId]?.recreational;

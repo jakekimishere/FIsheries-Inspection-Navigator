@@ -220,7 +220,7 @@ SPECIES_DATA['bluefin-tuna'] = {
                     hours: 'Mon-Fri 8am-5pm',
                     notes: 'BFT IFQ Hotline - Call for current IBQ status and retention limits'
                 },
-                reference: 'NOAA HMS Commercial Compliance Guide - See Section 6-2 for additional requirements'
+                reference: 'NOAA HMS Commercial Compliance Guide — see additional BFT measurement and gear requirements'
             },
             'commercial-trap': {
                 name: 'Commercial - Trap Category',
@@ -266,54 +266,75 @@ SPECIES_DATA['bluefin-tuna'] = {
             },
             'recreational': {
                 name: 'Recreational - HMS Angler Permit',
-                limit: { count: 1, unit: 'fish' },
+                limit: { count: 2, unit: 'fish per vessel per day/trip' },
                 cfr: '50 CFR 635.23',
-                notes: '01 per vessel per day/trip. Size limit: 27" to less than 73" CFL. Must be reported within 24 hours.',
+                notes: '2 BFT per vessel per day/trip. Only 1 may be large school or small medium (47" to <73" CFL). Size 27" to <73" CFL for standard retention.',
                 minimumSize: 27,
                 maximumSize: 73,
                 sizeUnit: 'inches CFL',
                 allowedSizeClasses: ['school', 'large-school-small-medium'],
+                subLimit: { maxLargeSchoolSmallMedium: 1, notes: 'No more than 1 fish may be large school or small medium class.' },
                 dailyLimit: {
-                    count: 1,
+                    count: 2,
                     sizeRange: '27" to <73" CFL',
-                    notes: 'Fish must be between 27" and less than 73" CFL. Fish <27" or ≥73" are prohibited.'
+                    notes: 'Only 1 may be large school or small medium (47"–<73" CFL).'
                 },
                 trophyFishery: {
                     available: true,
                     sizeClass: '≥73" CFL',
                     limit: { count: 1, period: 'per vessel per year' },
                     status: {
-                        south: 'Closed through Dec 31, 2026',
-                        sne: 'Verify NOAA HMS bulletin for trophy quota',
-                        gom: 'Verify NOAA HMS bulletin for trophy quota'
+                        south: 'CLOSED',
+                        sne: 'OPEN',
+                        gom: 'OPEN'
                     },
-                    notes: 'Southern area trophy fishery closed effective Jan 13, 2026 through Dec 31, 2026 (≥73" CFL). Other areas: verify current NOAA HMS bulletins.'
+                    notes: 'Trophy fishery (≥73" CFL): South closed; Southern New England and Gulf of Maine open — verify NOAA trophy quota.'
                 }
+            },
+            'recreational-charter': {
+                name: 'Recreational - HMS Charter',
+                limit: { count: 3, unit: 'fish per vessel per day/trip' },
+                cfr: '50 CFR 635.23',
+                notes: '3 BFT per vessel per day/trip. Only 1 may be large school or small medium.',
+                minimumSize: 27,
+                maximumSize: 73,
+                sizeUnit: 'inches CFL',
+                subLimit: { maxLargeSchoolSmallMedium: 1 }
+            },
+            'recreational-headboat': {
+                name: 'Recreational - HMS Headboat',
+                limit: { count: 6, unit: 'fish per vessel per day/trip' },
+                cfr: '50 CFR 635.23',
+                notes: '6 BFT per vessel per day/trip. Only 1 may be large school or small medium.',
+                minimumSize: 27,
+                maximumSize: 73,
+                sizeUnit: 'inches CFL',
+                subLimit: { maxLargeSchoolSmallMedium: 1 }
             },
             'recreational-charter-headboat': {
                 name: 'Recreational - HMS Charter/Headboat',
-                limit: { count: 1, unit: 'fish' },
+                limit: { count: 3, unit: 'fish per vessel per day/trip' },
                 cfr: '50 CFR 635.23',
-                notes: '01 per vessel per day/trip. Size limit: 27" to less than 73" CFL.',
+                notes: 'Charter: 3/vessel/day/trip; Headboat: 6/vessel/day/trip. Select charter vs headboat in assessment. Only 1 large school/small medium.',
                 minimumSize: 27,
                 maximumSize: 73,
                 sizeUnit: 'inches CFL',
                 allowedSizeClasses: ['school', 'large-school-small-medium'],
                 dailyLimit: {
-                    count: 1,
+                    count: 3,
                     sizeRange: '27" to <73" CFL',
-                    notes: 'Fish must be between 27" and less than 73" CFL. Fish <27" or ≥73" are prohibited.'
+                    notes: 'Headboat limit is 6 — specify headboat in permit type.'
                 },
                 trophyFishery: {
                     available: true,
                     sizeClass: '≥73" CFL',
                     limit: { count: 1, period: 'per vessel per year' },
                     status: {
-                        south: 'Closed through Dec 31, 2026',
-                        sne: 'Verify NOAA HMS bulletin for trophy quota',
-                        gom: 'Verify NOAA HMS bulletin for trophy quota'
+                        south: 'CLOSED',
+                        sne: 'OPEN',
+                        gom: 'OPEN'
                     },
-                    notes: 'Southern area trophy fishery closed effective Jan 13, 2026 through Dec 31, 2026 (≥73" CFL). Other areas: verify current NOAA HMS bulletins.'
+                    notes: 'Trophy fishery: South closed; SNE and GOM open.'
                 }
             }
         },
@@ -359,6 +380,12 @@ SPECIES_DATA['bluefin-tuna'] = {
             vms: {
                 required: false,
                 notes: 'VMS required on all vessels with pelagic longline gear on board. Required on all vessels with bottom longline gear on board of SC, NC, and VA between 33°00\'N and 36°30\'N from January through July.',
+                cfr: '50 CFR 635.7'
+            },
+            ems: {
+                required: true,
+                applicablePermits: ['commercial-longline'],
+                notes: 'Atlantic Tunas Longline permit: vessel cannot depart without installed, operable, and certified EMS (including video) recording for the entire trip.',
                 cfr: '50 CFR 635.7'
             },
             operatorsPermit: {
@@ -407,8 +434,10 @@ SPECIES_DATA['bluefin-tuna'] = {
                     { value: 'commercial-trap', label: 'Commercial - Trap Category', description: 'Trap gear' },
                     { value: 'commercial-purse-seine', label: 'Commercial - Purse Seine Category', description: 'Purse seine gear' },
                     { value: 'commercial-charter-headboat', label: 'Commercial - Charter/Headboat Category', description: 'Charter/headboat with commercial endorsement' },
-                    { value: 'recreational', label: 'Recreational - Angling Permit', description: 'Private recreational vessel' },
-                    { value: 'recreational-charter-headboat', label: 'Recreational - Charter/Headboat', description: 'Charter/headboat recreational operations' }
+                    { value: 'recreational', label: 'Recreational - HMS Angler', description: 'Private angler — 2 BFT/vessel/day/trip' },
+                    { value: 'recreational-charter', label: 'Recreational - Charter', description: '3 BFT/vessel/day/trip' },
+                    { value: 'recreational-headboat', label: 'Recreational - Headboat', description: '6 BFT/vessel/day/trip' },
+                    { value: 'recreational-charter-headboat', label: 'Recreational - Charter/Headboat (unspecified)', description: 'Prefer Charter or Headboat option above' }
                 ],
                 cfr: '50 CFR 635.4'
             },
@@ -435,8 +464,10 @@ SPECIES_DATA['bluefin-tuna'] = {
                     'commercial-trap': { count: 1 },
                     'commercial-purse-seine': { count: 0, prohibited: true },
                     'commercial-charter-headboat': null,
-                    'recreational': { count: 1 },
-                    'recreational-charter-headboat': { count: 1 }
+                    'recreational': { count: 2 },
+                    'recreational-charter': { count: 3 },
+                    'recreational-headboat': { count: 6 },
+                    'recreational-charter-headboat': { count: 3 }
                 },
                 violation: {
                     ifExceeds: 'VIOLATION: Bluefin tuna possession exceeds daily/category limit (50 CFR 635.23)',
@@ -870,6 +901,36 @@ SPECIES_DATA['yellowfin-tuna'] = {
                     { value: 'recreational-charter-headboat', label: 'Recreational - HMS Charter/Headboat', description: 'Charter/headboat recreational operations' }
                 ],
                 cfr: '50 CFR 635.4'
+            },
+            numberOfFish: {
+                question: 'How many yellowfin tuna are on board?',
+                field: 'numberOfFish',
+                required: true,
+                type: 'number',
+                min: 0,
+                cfr: '50 CFR 635.23'
+            },
+            possessionLimitCheck: {
+                question: 'Does retention exceed the permit limit?',
+                field: 'exceedsLimit',
+                type: 'auto',
+                dependsOn: ['permitType', 'numberOfFish'],
+                autoCheck: true,
+                limits: {
+                    'commercial-general': null,
+                    'commercial-harpoon': null,
+                    'commercial-longline': null,
+                    'commercial-trap': { count: 0, prohibited: true },
+                    'commercial-purse-seine': null,
+                    'commercial-charter-headboat': null,
+                    'recreational': { count: 3, unit: 'fish per person per day' },
+                    'recreational-charter-headboat': { count: 3, unit: 'fish per person per day' }
+                },
+                violation: {
+                    ifExceeds: 'VIOLATION: Yellowfin tuna possession exceeds limit (50 CFR 635.22/635.23)',
+                    ifProhibited: 'VIOLATION: Yellowfin tuna retention PROHIBITED under trap permit (50 CFR 635.23)'
+                },
+                cfr: '50 CFR 635.23'
             },
             minimumSize: {
                 question: 'What is the minimum size of yellowfin tuna on board?',
@@ -1965,15 +2026,27 @@ SPECIES_DATA['swordfish'] = {
             },
             'recreational': {
                 name: 'Recreational',
-                limit: { count: 1, unit: 'fish' },
+                limit: { count: 4, unit: 'fish per vessel per trip' },
                 cfr: '50 CFR 635.22',
-                notes: '1 North Atlantic swordfish per person per day (angling permit). Minimum 47" LJFL. Charter: up to 6/vessel/trip. Report within 24 hours.'
+                notes: '1 swordfish per person per day, up to 4 per vessel per trip (angling permit). Minimum 47" LJFL or 25" CK if head removed.'
             },
-            'recreational-charter-headboat': {
-                name: 'Recreational - Charter/Headboat',
+            'recreational-charter': {
+                name: 'Recreational - Charter',
                 limit: { count: 6, unit: 'fish per vessel per trip' },
                 cfr: '50 CFR 635.22',
-                notes: 'For-hire: 1 swordfish per paying passenger, up to 6 per vessel per trip. Minimum 47" LJFL.'
+                notes: '1 swordfish per paying passenger, up to 6 per vessel per trip. Minimum 47" LJFL.'
+            },
+            'recreational-headboat': {
+                name: 'Recreational - Headboat',
+                limit: { count: 15, unit: 'fish per vessel per trip' },
+                cfr: '50 CFR 635.22',
+                notes: '1 swordfish per paying passenger, up to 15 per vessel per trip. Minimum 47" LJFL.'
+            },
+            'recreational-charter-headboat': {
+                name: 'Recreational - Charter/Headboat (unspecified)',
+                limit: { count: 6, unit: 'fish per vessel per trip' },
+                cfr: '50 CFR 635.22',
+                notes: 'Prefer Charter (6) or Headboat (15) option. Default check uses charter limit.'
             }
         },
         size: {
@@ -2012,8 +2085,10 @@ SPECIES_DATA['swordfish'] = {
                     { value: 'commercial-trap', label: 'Commercial - Trap Category', description: 'Trap gear - PROHIBITED for swordfish' },
                     { value: 'commercial-purse-seine', label: 'Commercial - Purse Seine Category', description: 'Purse seine gear' },
                     { value: 'commercial-charter-headboat', label: 'Commercial - Charter/Headboat Category', description: 'Charter/headboat with commercial endorsement' },
-                    { value: 'recreational', label: 'Recreational - HMS Angling Permit', description: 'Private recreational vessel' },
-                    { value: 'recreational-charter-headboat', label: 'Recreational - HMS Charter/Headboat', description: 'Charter/headboat recreational operations' }
+                    { value: 'recreational', label: 'Recreational - HMS Angling Permit', description: 'Private recreational — up to 4 swordfish/vessel/trip' },
+                    { value: 'recreational-charter', label: 'Recreational - Charter', description: 'Up to 6 swordfish/vessel/trip (1 per paying passenger)' },
+                    { value: 'recreational-headboat', label: 'Recreational - Headboat', description: 'Up to 15 swordfish/vessel/trip (1 per paying passenger)' },
+                    { value: 'recreational-charter-headboat', label: 'Recreational - Charter/Headboat (unspecified)', description: 'Prefer Charter or Headboat option above' }
                 ],
                 cfr: '50 CFR 635.4'
             },
@@ -2054,7 +2129,9 @@ SPECIES_DATA['swordfish'] = {
                     'commercial-trap': { count: 0, prohibited: true },
                     'commercial-purse-seine': null, // No limit
                     'commercial-charter-headboat': null, // No limit
-                    'recreational': { count: 1, unit: 'fish per person per day' },
+                    'recreational': { count: 4, unit: 'fish per vessel per trip' },
+                    'recreational-charter': { count: 6, unit: 'fish per vessel per trip' },
+                    'recreational-headboat': { count: 15, unit: 'fish per vessel per trip' },
                     'recreational-charter-headboat': { count: 6, unit: 'fish per vessel per trip' }
                 },
                 violation: {
@@ -2098,6 +2175,14 @@ SPECIES_DATA['swordfish'] = {
                     'recreational-charter-headboat': {
                         authorized: ['rod-reel', 'handline', 'bandit', 'greenstick'],
                         notes: 'Charter/Headboat Recreational: Rod and reel, handline, bandit gear, and greenstick authorized'
+                    },
+                    'recreational-charter': {
+                        authorized: ['rod-reel', 'handline', 'bandit', 'greenstick'],
+                        notes: 'Charter Recreational: Rod and reel, handline, bandit gear, and greenstick authorized'
+                    },
+                    'recreational-headboat': {
+                        authorized: ['rod-reel', 'handline', 'bandit', 'greenstick'],
+                        notes: 'Headboat Recreational: Rod and reel, handline, bandit gear, and greenstick authorized'
                     },
                     'recreational': {
                         authorized: ['rod-reel', 'handline'],
@@ -2302,7 +2387,7 @@ SPECIES_DATA['atlantic-sharks'] = {
                 required: false,
                 type: 'auto',
                 dependsOn: ['sharkSpecies'],
-                prohibitedSpecies: ['sandbar', 'dusky', 'silky', 'caribbean-reef', 'blacknose', 'atlantic-angel', 'bigeye-sand-tiger', 'bigeye-sixgill', 'bignose', 'caribbean-sharpnose', 'smalltail', 'narrowtooth', 'night', 'sixgill', 'bigeye-thresher'],
+                prohibitedSpecies: ['sandbar', 'dusky', 'silky', 'caribbean-reef', 'atlantic-angel', 'bigeye-sand-tiger', 'bigeye-sixgill', 'bignose', 'caribbean-sharpnose', 'smalltail', 'narrowtooth', 'night', 'sixgill', 'bigeye-thresher'],
                 notes: 'Prohibited species must be released immediately. No retention allowed.',
                 violation: {
                     ifTrue: 'VIOLATION: This shark species is PROHIBITED from retention. Must be released immediately (50 CFR 635.23)'
@@ -4889,24 +4974,27 @@ SPECIES_DATA['shortfin-mako-shark'] = {
         possession: {
             'commercial-general': {
                 name: 'Commercial - General Category',
-                limit: null, // Subject to quota
-                unit: 'fish or lbs',
+                limit: { count: 0, unit: 'fish' },
+                unit: 'Prohibited',
                 cfr: '50 CFR 635.23',
-                notes: 'Pelagic shark - retention allowed subject to quota. Check current regulations.'
+                notes: 'PROHIBITED — shortfin mako retention limit zero (all permits).',
+                prohibited: true
             },
             'commercial-harpoon': {
                 name: 'Commercial - Harpoon Category',
-                limit: null, // Subject to quota allocation
-                unit: 'fish or lbs',
+                limit: { count: 0, unit: 'fish' },
+                unit: 'Prohibited',
                 cfr: '50 CFR 635.23',
-                notes: 'Harpoon Category has separate quota allocation. Limits vary by size class and season.'
+                notes: 'PROHIBITED — shortfin mako retention limit zero.',
+                prohibited: true
             },
             'commercial-longline': {
                 name: 'Commercial - Longline Category',
-                limit: null, // Subject to quota allocation
-                unit: 'fish or lbs',
+                limit: { count: 0, unit: 'fish' },
+                unit: 'Prohibited',
                 cfr: '50 CFR 635.23',
-                notes: 'Longline Category has separate quota allocation. Subject to bycatch limits and area restrictions.'
+                notes: 'PROHIBITED — shortfin mako retention limit zero.',
+                prohibited: true
             },
             'commercial-trap': {
                 name: 'Commercial - Trap Category',
@@ -4918,10 +5006,11 @@ SPECIES_DATA['shortfin-mako-shark'] = {
             },
             'commercial-purse-seine': {
                 name: 'Commercial - Purse Seine Category',
-                limit: null,
-                unit: 'No Limit',
+                limit: { count: 0, unit: 'fish' },
+                unit: 'Prohibited',
                 cfr: '50 CFR 635.23',
-                notes: 'No Limit'
+                notes: 'PROHIBITED — shortfin mako retention limit zero.',
+                prohibited: true
             },
             'commercial-charter-headboat': {
                 name: 'Commercial - Charter/Headboat Category',
@@ -5000,15 +5089,16 @@ SPECIES_DATA['shortfin-mako-shark'] = {
                 dependsOn: ['permitType', 'numberOfFish'],
                 autoCheck: true,
                 limits: {
-                    'commercial-general': null, // Subject to quota
-                    'commercial-harpoon': null, // Subject to quota allocation
-                    'commercial-longline': null, // Subject to quota allocation
-                    'recreational': 1, // 1 shark per vessel per trip
-                    'recreational-charter-headboat': 1 // 1 shark per vessel per trip
+                    'commercial-general': { count: 0, prohibited: true },
+                    'commercial-harpoon': { count: 0, prohibited: true },
+                    'commercial-longline': { count: 0, prohibited: true },
+                    'recreational': { count: 0, prohibited: true },
+                    'recreational-charter-headboat': { count: 0, prohibited: true }
                 },
-                notes: 'Commercial limits subject to quota - check current regulations. Recreational: 1 shark per vessel per trip from pelagic shark management group.',
+                notes: 'Retention limit zero for all permit types — release at haulback.',
                 violation: {
-                    ifExceeds: 'VIOLATION: Possession amount exceeds permit limit (50 CFR 635.23)'
+                    ifExceeds: 'VIOLATION: Possession amount exceeds permit limit (50 CFR 635.23)',
+                    ifProhibited: 'VIOLATION: Shortfin mako retention prohibited — limit zero (50 CFR 635.22)'
                 },
                 cfr: '50 CFR 635.23'
             },
@@ -7257,16 +7347,16 @@ SPECIES_DATA['blacknose-shark'] = {
             },
             'recreational': {
                 name: 'Recreational',
-                limit: { count: 1, unit: 'fish' },
-                cfr: '50 CFR 635.23',
-                notes: '1 shark per vessel per trip from blacknose small coastal shark (SCS) management group'
+                limit: { count: 1, unit: 'fish per vessel per trip' },
+                cfr: '50 CFR 635.22',
+                notes: '1 shark per vessel per trip (54″ FL minimum). Retention prohibited north of 34°00′ N.'
             }
         },
         size: {
-            minimum: null,
-            unit: 'varies',
-            cfr: '50 CFR 635.23',
-            notes: 'Check current size requirements for blacknose SCS'
+            minimum: 54,
+            unit: 'inches (fork length)',
+            cfr: '50 CFR 635.22',
+            notes: 'Minimum 54″ fork length. Retention prohibited north of 34°00′ N latitude.'
         },
         gear: {
             'rod-reel': {
@@ -7295,6 +7385,24 @@ SPECIES_DATA['blacknose-shark'] = {
                 dependsOn: ['permitType'],
                 notes: 'Record total number of blacknose sharks on board',
                 cfr: '50 CFR 635.23'
+            },
+            catchLatitudeZone: {
+                question: 'Relative to 34°00′ N, where was the blacknose caught or landed?',
+                field: 'catchLatitudeZone',
+                required: true,
+                type: 'choice',
+                dependsOn: ['numberOfFish'],
+                options: [
+                    { value: 'south', label: 'South of 34°00′ N', notes: 'Retention may be allowed if otherwise compliant' },
+                    { value: 'north', label: 'North of 34°00′ N', notes: 'Retention prohibited' },
+                    { value: 'unknown', label: 'Unknown / not documented', notes: 'Verify logbook or VMS if available' }
+                ],
+                notes: 'Atlantic blacknose retention is prohibited north of 34°00′ N (50 CFR 635.22).',
+                violation: {
+                    ifEquals: 'north',
+                    message: 'VIOLATION: Atlantic blacknose retention prohibited north of 34°00′ N (50 CFR 635.22)'
+                },
+                cfr: '50 CFR 635.22'
             },
             possessionLimitCheck: {
                 question: 'Does the possession amount exceed the permit limit?',

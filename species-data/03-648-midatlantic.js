@@ -31,9 +31,9 @@ SPECIES_DATA['atlantic-mackerel'] = {
             },
             'recreational': {
                 name: 'Recreational',
-                limit: { count: 20, unit: 'fish' },
+                limit: { count: 25, unit: 'fish per person per day' },
                 cfr: '50 CFR 648.24',
-                notes: '20 fish per person per day'
+                notes: '25 fish per person per day. Squid/chub/butterfish: no federal limit.'
             }
         },
         size: {
@@ -72,8 +72,12 @@ SPECIES_DATA['atlantic-mackerel'] = {
                 field: 'permitType',
                 required: true,
                 options: [
-                    { value: 'commercial', label: 'Atlantic Mackerel Commercial Permit', description: 'Commercial fishing permit' },
-                    { value: 'recreational', label: 'Recreational (No Federal Permit Required)', description: 'Recreational fishing' }
+                    { value: 'mackerel-tier1-limited', label: 'Atlantic Mackerel Tier 1 Limited Access', description: '200,000 lbs/trip — VMS required' },
+                    { value: 'mackerel-tier2-limited', label: 'Atlantic Mackerel Tier 2 Limited Access', description: '135,000 lbs/trip — VMS required' },
+                    { value: 'mackerel-tier3-limited', label: 'Atlantic Mackerel Tier 3 Limited Access', description: '100,000 lbs/trip — VMS required' },
+                    { value: 'smb4-mackerel-open-access', label: 'SMB 4 Atlantic Mackerel Open Access', description: '20,000 lbs/trip' },
+                    { value: 'smb2-party-charter', label: 'SMB 2 Squid/Mackerel/Butterfish Party/Charter', description: 'Mackerel 50/person with customers, 25 without' },
+                    { value: 'recreational', label: 'Recreational (No Federal Permit Required)', description: '25 fish per person per day' }
                 ],
                 cfr: '50 CFR 648.4'
             },
@@ -95,10 +99,14 @@ SPECIES_DATA['atlantic-mackerel'] = {
                 dependsOn: ['permitType', 'possessionAmount'],
                 autoCheck: true,
                 limits: {
-                    'commercial': null, // Subject to quota - check current trip limits
-                    'recreational': { count: 20, unit: 'fish per person per day' }
+                    'mackerel-tier1-limited': null,
+                    'mackerel-tier2-limited': null,
+                    'mackerel-tier3-limited': null,
+                    'smb4-mackerel-open-access': null,
+                    'smb2-party-charter': null,
+                    'recreational': { count: 25, unit: 'fish per person per day' }
                 },
-                notes: 'Commercial limits subject to annual quota - check current trip limits and quota status',
+                notes: 'Commercial tier limits enforced by permit type. Recreational: 25 fish/person/day.',
                 violation: {
                     ifExceeds: 'VIOLATION: Possession amount exceeds permit limit or quota (50 CFR 648.24)'
                 },
@@ -111,10 +119,10 @@ SPECIES_DATA['atlantic-mackerel'] = {
                 type: 'number',
                 dependsOn: ['permitType'],
                 applicablePermits: ['recreational'],
-                limit: { count: 20, unit: 'fish per person per day' },
-                notes: 'Recreational limit: 20 fish per person per day',
+                limit: { count: 25, unit: 'fish per person per day' },
+                notes: 'Recreational limit: 25 fish per person per day',
                 violation: {
-                    ifExceeds: 'VIOLATION: Recreational bag limit is 20 fish per person per day (50 CFR 648.24)'
+                    ifExceeds: 'VIOLATION: Recreational bag limit is 25 fish per person per day (50 CFR 648.24)'
                 },
                 cfr: '50 CFR 648.24'
             },
@@ -231,8 +239,12 @@ SPECIES_DATA['longfin-squid'] = {
                 field: 'permitType',
                 required: true,
                 options: [
-                    { value: 'commercial', label: 'Longfin Squid Commercial Permit', description: 'Commercial fishing permit' },
-                    { value: 'recreational', label: 'Recreational (No Federal Permit Required)', description: 'Recreational fishing' }
+                    { value: 'smb1a-longfin-tier1', label: 'SMB 1A Longfin Tier 1 Moratorium', description: 'Unlimited — VMS required' },
+                    { value: 'smb1b-longfin-tier2', label: 'SMB 1B Longfin Tier 2 Moratorium', description: '5,000 lbs/trip — VMS required' },
+                    { value: 'smb1c-longfin-tier3', label: 'SMB 1C Longfin Tier 3 Moratorium', description: '2,500 lbs/trip' },
+                    { value: 'smb3-incidental', label: 'SMB 3 Squid/Butterfish Incidental', description: '250 lbs longfin/trip' },
+                    { value: 'smb2-party-charter', label: 'SMB 2 Party/Charter', description: 'Unlimited longfin (operator permit required)' },
+                    { value: 'recreational', label: 'Recreational (No Federal Permit Required)', description: 'No federal possession limit' }
                 ],
                 cfr: '50 CFR 648.4'
             },
@@ -254,10 +266,14 @@ SPECIES_DATA['longfin-squid'] = {
                 dependsOn: ['permitType', 'possessionAmount'],
                 autoCheck: true,
                 limits: {
-                    'commercial': null, // Subject to quota - check current trip limits
-                    'recreational': null // No federal limit
+                    'smb1a-longfin-tier1': null,
+                    'smb1b-longfin-tier2': null,
+                    'smb1c-longfin-tier3': null,
+                    'smb3-incidental': null,
+                    'smb2-party-charter': null,
+                    'recreational': null
                 },
-                notes: 'Commercial limits subject to annual quota - check current trip limits and quota status. Recreational: No federal possession limit.',
+                notes: 'Tier limits per permit type. Trimester mesh requirements apply.',
                 violation: {
                     ifExceeds: 'VIOLATION: Possession amount exceeds permit limit or quota (50 CFR 648.25)'
                 },
@@ -282,7 +298,7 @@ SPECIES_DATA['longfin-squid'] = {
                 required: false,
                 type: 'auto',
                 dependsOn: ['permitType'],
-                applicablePermits: ['commercial'],
+                applicablePermits: ['smb1a-longfin-tier1', 'smb1b-longfin-tier2', 'smb1c-longfin-tier3'],
                 autoCheck: true,
                 notes: 'Check current quota status - fishery may close when quota is reached',
                 cfr: '50 CFR 648.25'
@@ -293,7 +309,7 @@ SPECIES_DATA['longfin-squid'] = {
                 required: true,
                 type: 'boolean',
                 dependsOn: ['permitType'],
-                applicablePermits: ['commercial'],
+                applicablePermits: ['smb1a-longfin-tier1', 'smb1b-longfin-tier2', 'smb1c-longfin-tier3', 'smb3-incidental'],
                 notes: 'Commercial catch must be reported as required',
                 violation: {
                     ifFalse: 'VIOLATION: Commercial catch reporting required (50 CFR 648.7)'
@@ -376,8 +392,10 @@ SPECIES_DATA['shortfin-squid'] = {
                 field: 'permitType',
                 required: true,
                 options: [
-                    { value: 'commercial', label: 'Shortfin Squid Commercial Permit', description: 'Commercial fishing permit' },
-                    { value: 'recreational', label: 'Recreational (No Federal Permit Required)', description: 'Recreational fishing' }
+                    { value: 'smb5-illex-moratorium', label: 'SMB 5 Illex Squid Moratorium', description: 'Unlimited when directed fishery open — VMS required' },
+                    { value: 'smb3-incidental', label: 'SMB 3 Squid/Butterfish Incidental', description: '10,000 lbs illex/trip' },
+                    { value: 'smb2-party-charter', label: 'SMB 2 Party/Charter', description: 'Unlimited illex (operator permit required)' },
+                    { value: 'recreational', label: 'Recreational (No Federal Permit Required)', description: 'No federal possession limit' }
                 ],
                 cfr: '50 CFR 648.4'
             },
@@ -399,10 +417,12 @@ SPECIES_DATA['shortfin-squid'] = {
                 dependsOn: ['permitType', 'possessionAmount'],
                 autoCheck: true,
                 limits: {
-                    'commercial': null, // Subject to quota - check current trip limits
-                    'recreational': null // No federal limit
+                    'smb5-illex-moratorium': null,
+                    'smb3-incidental': null,
+                    'smb2-party-charter': null,
+                    'recreational': null
                 },
-                notes: 'Commercial limits subject to annual quota - check current trip limits and quota status. Recreational: No federal possession limit.',
+                notes: 'Illex moratorium unlimited when open; incidental 10,000 lbs/trip. Illex Trawl Exemption Area rules may apply.',
                 violation: {
                     ifExceeds: 'VIOLATION: Possession amount exceeds permit limit or quota (50 CFR 648.25)'
                 },
@@ -428,7 +448,7 @@ SPECIES_DATA['shortfin-squid'] = {
                 required: false,
                 type: 'auto',
                 dependsOn: ['permitType'],
-                applicablePermits: ['commercial'],
+                applicablePermits: ['smb5-illex-moratorium'],
                 autoCheck: true,
                 notes: 'Check current quota status - fishery may close when quota is reached',
                 cfr: '50 CFR 648.25'

@@ -4,13 +4,17 @@
  */
 const REGULATION_META = {
     appVersion: '1.0.0',
-    dataLastUpdated: '2026-05-21',
+    dataLastUpdated: '2026-06-13',
     region: 'northeast',
     dataFiles: [
         'species-data/',
         'REGULATION_DATES_CONFIG.js',
         'FISHERY_QUOTA_STATUS_CONFIG.js',
         'GROUND_FISH_TRIP_LIMITS_CONFIG.js',
+        'HMS_TUNAS_POLICY_CONFIG.js',
+        'HMS_HMS_POLICY_CONFIG.js',
+        'SMB648_POLICY_CONFIG.js',
+        'SALMON648_POLICY_CONFIG.js',
         'SPECIES_GROUPS_CONFIG.js',
         'regulation-updates.json'
     ],

@@ -41,10 +41,10 @@ const SPECIES_GROUPS = {
         }
     },
     
-    // Small Coastal Sharks (SCS) - Non-blacknose - may have combined limits
-    'scs-non-blacknose': {
-        name: 'Small Coastal Sharks (Non-Blacknose)',
-        description: 'Combined limits may apply',
+    // Small Coastal Sharks (SCS) — sharpnose & bonnethead per person; finetooth in vessel limit group
+    'scs-recreational': {
+        name: 'Small Coastal Sharks (SCS)',
+        description: 'Recreational: sharpnose & bonnethead 1 each per person per trip; finetooth in 1 shark/vessel limit',
         species: [
             'atlantic-sharpnose-shark',
             'bonnethead-shark',
@@ -52,9 +52,32 @@ const SPECIES_GROUPS = {
         ],
         limits: {
             'recreational': {
-                limit: null, // Check current regulations
-                cfr: '50 CFR 635.23',
-                notes: 'Check current non-blacknose SCS retention limits'
+                limit: { count: 1, unit: 'fish per person per trip (sharpnose & bonnethead)' },
+                cfr: '50 CFR 635.22',
+                notes: 'Atlantic sharpnose and bonnethead: 1 each per person per trip, no minimum size. Finetooth: 54" FL; counts toward 1 shark/vessel/trip.'
+            },
+            'recreational-charter-headboat': {
+                limit: { count: 1, unit: 'fish per vessel per trip (finetooth; sharpnose/bonnethead per person)' },
+                cfr: '50 CFR 635.22',
+                notes: 'Same as angler — verify passenger counts for sharpnose/bonnethead.'
+            }
+        }
+    },
+    
+    // Small Coastal Sharks (Non-Blacknose) - legacy alias
+    'scs-non-blacknose': {
+        name: 'Small Coastal Sharks (Non-Blacknose)',
+        description: 'See scs-recreational group for current limits',
+        species: [
+            'atlantic-sharpnose-shark',
+            'bonnethead-shark',
+            'finetooth-shark'
+        ],
+        limits: {
+            'recreational': {
+                limit: { count: 1, unit: 'fish per person per trip (sharpnose & bonnethead)' },
+                cfr: '50 CFR 635.22',
+                notes: 'Atlantic sharpnose and bonnethead: 1 each per person per trip.'
             }
         }
     },

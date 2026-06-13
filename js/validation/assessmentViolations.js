@@ -88,6 +88,26 @@
             const sf = resolveSummerFlounderCommercialLimit(speciesData, plc);
             return { ...sf, message: plc.violation?.ifExceeds || null };
         }
+        if (speciesId === 'bluefin-tuna' && permitType && typeof getBFTRecreationalVesselLimit === 'function') {
+            const bftRec = getBFTRecreationalVesselLimit(permitType);
+            if (bftRec?.count != null) {
+                return {
+                    count: bftRec.count,
+                    prohibited: false,
+                    message: plc?.violation?.ifExceeds || null
+                };
+            }
+        }
+        if (speciesId === 'swordfish' && permitType && typeof getSwordfishRecreationalVesselLimit === 'function') {
+            const sfRec = getSwordfishRecreationalVesselLimit(permitType);
+            if (sfRec?.count != null) {
+                return {
+                    count: sfRec.count,
+                    prohibited: false,
+                    message: plc?.violation?.ifExceeds || null
+                };
+            }
+        }
         let lim = plc.limits[permitType];
         if (lim === undefined) {
             const mapped = mapPermitTypeToPossessionKey(permitType);
@@ -212,6 +232,19 @@
         return messages;
     }
 
+    function checkBlacknoseLatitudeViolation(speciesId, speciesData, speciesName) {
+        if (speciesId !== 'blacknose-shark') return [];
+        const count = getCountFromData(speciesData);
+        if (!count || count <= 0) return [];
+        const checker = typeof isBlacknoseRetentionProhibited === 'function'
+            ? isBlacknoseRetentionProhibited
+            : (data) => (data?.catchLatitudeZone || data?.['catch-latitude-zone']) === 'north';
+        if (checker(speciesData)) {
+            return [`VIOLATION: ${speciesName} — retention prohibited north of 34°00′ N (50 CFR 635.22)`];
+        }
+        return [];
+    }
+
     function checkCountFieldViolations(speciesData, questions, ctx) {
         const messages = [];
         const count = getCountFromData(speciesData);
@@ -254,10 +287,17 @@
             speciesData,
             questions,
             speciesName: species.name || speciesId,
-            permitType: speciesData.permitType || speciesData['permit-type']
+            permitType: speciesData.permitType || speciesData['permit-type'],
+            vesselCategory: speciesData.vesselCategory || speciesData['vessel-category']
+                || speciesData.vesselClassification
         };
 
         violations.push(...checkCountFieldViolations(speciesData, questions, ctx));
+        violations.push(...checkBlacknoseLatitudeViolation(speciesId, speciesData, ctx.speciesName));
+
+        const assessmentDate = typeof parseAssessmentDate === 'function'
+            ? parseAssessmentDate(speciesData)
+            : (speciesData.dateOfCatch ? new Date(speciesData.dateOfCatch) : null);
 
         const count = getCountFromData(speciesData);
         if (count > 0 && speciesData.quotaStatus === 'closed') {
@@ -271,6 +311,24 @@
 
         for (const questionData of Object.values(questions)) {
             if (!questionData?.violation || !questionData.field) continue;
+
+            if (typeof questionAppliesToAssessment === 'function') {
+                if (!questionAppliesToAssessment(questionData, ctx)) continue;
+            } else {
+                if (questionData.applicablePermits && ctx.permitType) {
+                    if (!questionData.applicablePermits.includes(ctx.permitType)) continue;
+                }
+                if (questionData.applicableVesselCategories && ctx.vesselCategory) {
+                    if (!questionData.applicableVesselCategories.includes(ctx.vesselCategory)) continue;
+                }
+                if (questionData.dateFilter?.months && Array.isArray(questionData.dateFilter.months)) {
+                    const d = assessmentDate instanceof Date && !Number.isNaN(assessmentDate.getTime())
+                        ? assessmentDate
+                        : new Date();
+                    if (!questionData.dateFilter.months.includes(d.getMonth() + 1)) continue;
+                }
+            }
+
             const raw = speciesData[questionData.field];
             if (raw === undefined || raw === null || raw === '') continue;
 

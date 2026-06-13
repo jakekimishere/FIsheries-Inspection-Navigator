@@ -465,7 +465,9 @@ function createSpeciesCard(speciesId, species) {
                 </div>
                 <img src="${fishImage}" alt="${species.name}" class="species-image" ${loadingAttr} ${decodingAttr} onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEyMCIgZmlsbD0iI2Y1ZjVmNSIgcng9IjgiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0cHgiIGZpbGw9IiM3MzYzNDciIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5JbWFnZQ==';">
                 <div class="species-name">${species.name}</div>
-                <div class="species-badge">Available</div>
+                ${typeof SpeciesPolicyAdvisor !== 'undefined'
+                    ? SpeciesPolicyAdvisor.renderBadgeHtml(SpeciesPolicyAdvisor.getProfile(speciesId, species))
+                    : '<div class="species-badge">Available</div>'}
             `;
         }
     } catch (error) {

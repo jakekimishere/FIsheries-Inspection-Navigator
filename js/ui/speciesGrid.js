@@ -199,7 +199,9 @@ class SpeciesGrid {
                     </div>
                     <img src="${fishImage}" alt="${species.name}" class="species-image" ${loadingAttr} ${decodingAttr} onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEyMCIgZmlsbD0iI2Y1ZjVmNSIgcng9IjgiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0cHgiIGZpbGw9IiM3MzYzNDciIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5JbWFnZQ==';">
                     <div class="species-name">${species.name}</div>
-                    <div class="species-badge">Available</div>
+                    ${typeof SpeciesPolicyAdvisor !== 'undefined'
+                        ? SpeciesPolicyAdvisor.renderBadgeHtml(SpeciesPolicyAdvisor.getProfile(speciesId, species))
+                        : '<div class="species-badge">Available</div>'}
                 `;
             }
         } catch (error) {
@@ -323,6 +325,18 @@ class SpeciesGrid {
                     list.appendChild(tag);
                 }
             });
+        }
+
+        let policyPanel = document.getElementById('species-policy-panel');
+        if (!policyPanel && display) {
+            policyPanel = document.createElement('div');
+            policyPanel.id = 'species-policy-panel';
+            display.appendChild(policyPanel);
+        }
+        if (policyPanel && typeof SpeciesPolicyAdvisor !== 'undefined') {
+            policyPanel.innerHTML = SpeciesPolicyAdvisor.renderSelectedPanel(this.state.selectedSpecies);
+        } else if (policyPanel) {
+            policyPanel.innerHTML = '';
         }
 
         if (continueBtn) {

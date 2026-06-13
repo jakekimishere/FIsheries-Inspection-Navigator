@@ -113,9 +113,9 @@ SPECIES_DATA['atlantic-cod'] = {
             },
             'recreational': {
                 name: 'Recreational',
-                limit: { count: 10, unit: 'fish' },
+                limit: { count: 1, unit: 'fish per person per day' },
                 cfr: '50 CFR 648.83',
-                notes: '10 fish per person per day'
+                notes: 'Inside GOM RMA only: 1 fish/person, 23″ min, Sept 1–Oct 31. Outside GOM RMA — no retention.'
             }
         },
         dataSources: [
@@ -214,10 +214,10 @@ SPECIES_DATA['atlantic-cod'] = {
                 type: 'number',
                 dependsOn: ['permitType'],
                 applicablePermits: ['recreational'],
-                limit: { count: 10, unit: 'fish per person per day' },
-                notes: 'Recreational limit: 10 fish per person per day',
+                limit: { count: 1, unit: 'fish per person per day' },
+                notes: 'Inside GOM RMA: 1 cod/person, 23″ min, Sept 1–Oct 31. Outside GOM RMA — no retention.',
                 violation: {
-                    ifExceeds: 'VIOLATION: Recreational bag limit is 10 fish per person per day (50 CFR 648.83)'
+                    ifExceeds: 'VIOLATION: Recreational cod bag limit exceeded (50 CFR 648.83)'
                 },
                 cfr: '50 CFR 648.83'
             },
@@ -307,7 +307,7 @@ SPECIES_DATA['haddock'] = {
                 name: 'Recreational',
                 limit: { count: 15, unit: 'fish' },
                 cfr: '50 CFR 648.83',
-                notes: '15 fish per person per day'
+                notes: 'Inside GOM RMA: 15 fish/person, 18″ min (May–Feb and Apr 1–30). Outside GOM RMA — no federal bag limit, 18″ min.'
             }
         },
         dataSources: [
@@ -607,7 +607,7 @@ const speciesImageMap = {
 
 ['winter-flounder', 'windowpane-flounder', 'atlantic-wolffish', 'redfish', 
  'atlantic-halibut', 'white-hake', 'pollock', 'witch-flounder', 
- 'american-plaice', 'ocean-pout', 'monkfish'].forEach(speciesId => {
+ 'american-plaice', 'ocean-pout'].forEach(speciesId => {
     const speciesInfo = NORTHEAST_MULTISPECIES_DATA.species[speciesId];
     if (speciesInfo && !SPECIES_DATA[speciesId]) {
         const imageFileName = speciesImageMap[speciesId];

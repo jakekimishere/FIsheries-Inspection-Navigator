@@ -84,7 +84,7 @@
                     <button type="button" class="btn-secondary" onclick="goHome()">← Back to Home</button>
                 </div>
                 <h2>Select Species to Inspect</h2>
-                <p class="info-note">Select one or more species that are on board the vessel. You can select multiple species and assess them together.</p>
+                <p class="info-note">Select species on board. Each card shows federal policy status; selected species show <strong>current rules and what compliance means</strong> before you proceed. Full pass/fail is confirmed in assessment after you enter amounts.</p>
                 
                 <!-- Assessment Date Input -->
                 <div class="assessment-date-container">
@@ -203,11 +203,21 @@
     <script src="species-data/11-misc-placeholders.js"></script>
     <script src="species-data/12-648-groundfish.js"></script>
     <script src="species-data/13-648-late-species.js"></script>
+    <script src="species-data/15-648-monkfish.js"></script>
+    <script src="LOCATION_CHECKLIST_CONFIG.js"></script>
     <script src="species-data/14-init.js"></script>
     <script src="update-checker.js"></script>
     <script src="REGULATION_DATES_CONFIG.js"></script>
     <script src="GROUND_FISH_TRIP_LIMITS_CONFIG.js"></script>
+    <script src="SMB648_POLICY_CONFIG.js"></script>
+    <script src="SALMON648_POLICY_CONFIG.js"></script>
+    <script src="SCALLOP648_POLICY_CONFIG.js"></script>
+    <script src="SURFCLAM648_POLICY_CONFIG.js"></script>
+    <script src="NMS648_POLICY_CONFIG.js"></script>
+    <script src="MONKFISH648_POLICY_CONFIG.js"></script>
     <script src="FISHERY_QUOTA_STATUS_CONFIG.js"></script>
+    <script src="HMS_TUNAS_POLICY_CONFIG.js"></script>
+    <script src="HMS_HMS_POLICY_CONFIG.js"></script>
     <script src="SPECIES_GROUPS_CONFIG.js"></script>
 
     <!-- Utils & state -->
@@ -223,6 +233,7 @@
     <script src="js/validation/validators.js"></script>
 
     <!-- UI modules -->
+    <script src="js/ui/speciesPolicyAdvisor.js"></script>
     <script src="js/ui/speciesGrid.js"></script>
     <script src="js/ui/questionRenderer.js"></script>
     <script src="js/ui/assessmentSteps.js"></script>

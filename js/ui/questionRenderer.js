@@ -52,8 +52,31 @@ class QuestionRenderer {
         // Sort questions by dependencies (questions with dependencies come after their dependencies)
         const sortedQuestions = this.sortQuestionsByDependencies(allQuestions);
 
+        const locationHeadersShown = new Set();
+
         // Render questions
         for (const questionItem of sortedQuestions) {
+            const { speciesId, questionData } = questionItem;
+            if (questionData.section === 'location-checklist' && questionData.sectionTitle) {
+                const headerKey = `${speciesId}:${questionData.sectionTitle}`;
+                if (!locationHeadersShown.has(headerKey)) {
+                    const sectionDiv = document.createElement('div');
+                    sectionDiv.className = 'location-checklist-section';
+                    const title = document.createElement('h3');
+                    title.className = 'location-checklist-title';
+                    title.textContent = questionData.sectionTitle;
+                    sectionDiv.appendChild(title);
+                    if (questionData.sectionIntro) {
+                        const intro = document.createElement('p');
+                        intro.className = 'location-checklist-intro';
+                        intro.textContent = questionData.sectionIntro;
+                        sectionDiv.appendChild(intro);
+                    }
+                    container.appendChild(sectionDiv);
+                    locationHeadersShown.add(headerKey);
+                }
+            }
+
             const questionElement = this.renderQuestion(questionItem.speciesId, questionItem.questionKey, questionItem.questionData, questionItem.species);
             if (questionElement) {
                 container.appendChild(questionElement);
@@ -87,6 +110,14 @@ class QuestionRenderer {
             if (question.applicablePermits) {
                 const permitType = this.getAnswer(speciesId, 'permitType');
                 if (permitType && !question.applicablePermits.includes(permitType)) {
+                    continue;
+                }
+            }
+
+            if (question.applicableVesselCategories) {
+                const vesselCategory = this.getAnswer(speciesId, 'vesselCategory')
+                    || this.getAnswer(speciesId, 'vessel-category');
+                if (vesselCategory && !question.applicableVesselCategories.includes(vesselCategory)) {
                     continue;
                 }
             }

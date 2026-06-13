@@ -2,7 +2,7 @@
  * Application script inventory — keep in sync with index.html load order.
  * Used by service-worker.js (importScripts) for offline precaching.
  */
-const APP_CACHE_NAME = 'fin-fisheries-v12';
+const APP_CACHE_NAME = 'fin-fisheries-v24';
 
 /** Must match scripts/load-species-data.js SPECIES_DATA_FILES */
 const SPECIES_DATA_URLS = [
@@ -19,6 +19,8 @@ const SPECIES_DATA_URLS = [
     './species-data/11-misc-placeholders.js',
     './species-data/12-648-groundfish.js',
     './species-data/13-648-late-species.js',
+    './species-data/15-648-monkfish.js',
+    './LOCATION_CHECKLIST_CONFIG.js',
     './species-data/14-init.js'
 ];
 
@@ -29,7 +31,15 @@ const APP_SCRIPT_URLS = [
     './update-checker.js',
     './REGULATION_DATES_CONFIG.js',
     './GROUND_FISH_TRIP_LIMITS_CONFIG.js',
+    './SMB648_POLICY_CONFIG.js',
+    './SALMON648_POLICY_CONFIG.js',
+    './SCALLOP648_POLICY_CONFIG.js',
+    './SURFCLAM648_POLICY_CONFIG.js',
+    './NMS648_POLICY_CONFIG.js',
+    './MONKFISH648_POLICY_CONFIG.js',
     './FISHERY_QUOTA_STATUS_CONFIG.js',
+    './HMS_TUNAS_POLICY_CONFIG.js',
+    './HMS_HMS_POLICY_CONFIG.js',
     './SPECIES_GROUPS_CONFIG.js',
     './js/utils/helpers.js',
     './js/utils/dateManager.js',
@@ -41,6 +51,7 @@ const APP_SCRIPT_URLS = [
     './js/validation/speciesViolationChecks.js',
     './js/validation/violationChecker.js',
     './js/validation/validators.js',
+    './js/ui/speciesPolicyAdvisor.js',
     './js/ui/speciesGrid.js',
     './js/ui/questionRenderer.js',
     './js/ui/assessmentSteps.js',

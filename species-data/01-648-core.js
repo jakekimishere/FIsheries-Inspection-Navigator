@@ -281,6 +281,26 @@ const SPECIES_DATA = {
                     required: true,
                     cfr: '50 CFR 648.4'
                 },
+                'la-small-ft': {
+                    name: 'Limited Access Full-Time Small Dredge',
+                    required: true,
+                    cfr: '50 CFR 648.4'
+                },
+                'la-small-pt': {
+                    name: 'Limited Access Part-Time Small Dredge',
+                    required: true,
+                    cfr: '50 CFR 648.4'
+                },
+                'la-trawl-ft': {
+                    name: 'Limited Access Full-Time (Trawl Authorized)',
+                    required: true,
+                    cfr: '50 CFR 648.4'
+                },
+                'la-trawl-pt': {
+                    name: 'Limited Access Part-Time (Trawl Authorized)',
+                    required: true,
+                    cfr: '50 CFR 648.4'
+                },
                 'lagc-ifq': {
                     name: 'LAGC IFQ',
                     required: true,
@@ -295,44 +315,89 @@ const SPECIES_DATA = {
                     name: 'LAGC Incidental',
                     required: true,
                     cfr: '50 CFR 648.4'
+                },
+                recreational: {
+                    name: 'Recreational',
+                    required: false,
+                    cfr: '50 CFR 648 Subpart D'
                 }
             },
             possession: {
+                recreational: {
+                    name: 'Recreational',
+                    limit: { shucked: 0, inshell: 0 },
+                    cfr: '50 CFR 648 Subpart D',
+                    notes: 'No recreational retention.'
+                },
                 'la-full': {
                     name: 'LA Full-Time',
-                    limit: { shucked: 18000, inshell: 2250 },
-                    accessAreaTrip: { shucked: 12000, inshell: 1500 },
+                    limit: { shucked: 400, inshell: 3332 },
+                    unlimitedOnDas: true,
+                    accessAreaTrip: { shucked: 12000, inshell: 99960 },
                     cfr: '50 CFR 648.59',
-                    notes: 'Open-area reference limits shown. Access Area trip possession (Framework 39): 12,000 lb shucked per trip (Area I or II); up to 24,000 lb total allocation FY2025.'
+                    notes: 'Unlimited on scallop DAS. Shoreward of VMS: 3,332 lb in-shell (≈400 lb shucked). Access area trip: 12,000 lb shucked (Framework 39).'
                 },
                 'la-part': {
                     name: 'LA Part-Time',
-                    limit: { shucked: 14400, inshell: 1800 },
-                    accessAreaTrip: { shucked: 9600, inshell: 1200 },
+                    limit: { shucked: 400, inshell: 3332 },
+                    unlimitedOnDas: true,
+                    accessAreaTrip: { shucked: 9600, inshell: 79968 },
                     cfr: '50 CFR 648.59',
-                    notes: 'Framework 39 access area trip possession: 9,600 lb shucked per trip (Area I or II). Verify open-area limits for DAS trips.'
+                    notes: 'Unlimited on scallop DAS. Shoreward of VMS: 3,332 lb in-shell. Access area trip: 9,600 lb shucked (Framework 39).'
                 },
                 'la-occ': {
                     name: 'LA Occasional',
-                    limit: { shucked: 7200, inshell: 900 },
-                    cfr: '50 CFR 648.53'
+                    limit: { shucked: 400, inshell: 3332 },
+                    unlimitedOnDas: true,
+                    cfr: '50 CFR 648.53',
+                    notes: 'Unlimited on scallop DAS. Shoreward of VMS: 3,332 lb in-shell.'
+                },
+                'la-small-ft': {
+                    name: 'LA Small Dredge Full-Time',
+                    limit: { shucked: 400, inshell: 3332 },
+                    unlimitedOnDas: true,
+                    cfr: '50 CFR 648.59',
+                    notes: 'One dredge ≤10 ft 6 in. Unlimited on DAS; shoreward of VMS: 3,332 lb in-shell.'
+                },
+                'la-small-pt': {
+                    name: 'LA Small Dredge Part-Time',
+                    limit: { shucked: 400, inshell: 3332 },
+                    unlimitedOnDas: true,
+                    cfr: '50 CFR 648.59',
+                    notes: 'One dredge ≤10 ft 6 in. Unlimited on DAS; shoreward of VMS: 3,332 lb in-shell.'
+                },
+                'la-trawl-ft': {
+                    name: 'LA Trawl Full-Time',
+                    limit: { shucked: 400, inshell: 3332 },
+                    unlimitedOnDas: true,
+                    cfr: '50 CFR 648.59',
+                    notes: 'Unlimited on scallop DAS. Shoreward of VMS: 3,332 lb in-shell. Trawl mesh rules apply when catch exceeds incidental threshold.'
+                },
+                'la-trawl-pt': {
+                    name: 'LA Trawl Part-Time',
+                    limit: { shucked: 400, inshell: 3332 },
+                    unlimitedOnDas: true,
+                    cfr: '50 CFR 648.59',
+                    notes: 'Unlimited on scallop DAS. Shoreward of VMS: 3,332 lb in-shell. Trawl mesh rules apply when catch exceeds incidental threshold.'
                 },
                 'lagc-ifq': {
                     name: 'LAGC IFQ',
-                    limit: { shucked: 600, inshell: 75 },
-                    accessAreaTrip: { shucked: 800, inshell: 100 },
+                    limit: { shucked: 600, inshell: 4998 },
+                    accessAreaTrip: { shucked: 800, inshell: 6664 },
                     cfr: '50 CFR 648.53',
-                    notes: 'Open-area trip: 600 lb shucked. Access Area trip: 800 lb shucked (Framework 39).'
+                    notes: 'Shoreward of VMS: 600 lb shucked or 4,998 lb in-shell per trip. All harvest counts against IFQ.'
                 },
                 'lagc-ngom': {
                     name: 'LAGC NGOM',
-                    limit: { shucked: 200, inshell: 25 },
-                    cfr: '50 CFR 648.53'
+                    limit: { shucked: 200, inshell: 1666 },
+                    cfr: '50 CFR 648.53',
+                    notes: '200 lb shucked or 1,666 lb in-shell shoreward of VMS. NGOM closed to LAGC IFQ and incidental.'
                 },
                 'lagc-incidental': {
                     name: 'LAGC Incidental',
-                    limit: { shucked: 40, inshell: 5 },
-                    cfr: '50 CFR 648.53'
+                    limit: { shucked: 40, inshell: 333 },
+                    cfr: '50 CFR 648.53',
+                    notes: '40 lb shucked or 333 lb in-shell per trip.'
                 }
             },
             size: {
@@ -396,9 +461,14 @@ const SPECIES_DATA = {
                         { value: 'la-full', label: 'Limited Access Full-Time', description: 'Full-time scallop permit' },
                         { value: 'la-part', label: 'Limited Access Part-Time', description: 'Part-time scallop permit' },
                         { value: 'la-occ', label: 'Limited Access Occasional', description: 'Occasional scallop permit' },
+                        { value: 'la-small-ft', label: 'LA Full-Time Small Dredge', description: 'One dredge ≤10 ft 6 in' },
+                        { value: 'la-small-pt', label: 'LA Part-Time Small Dredge', description: 'One dredge ≤10 ft 6 in' },
+                        { value: 'la-trawl-ft', label: 'LA Full-Time (Trawl Authorized)', description: 'Authorized to use trawl net' },
+                        { value: 'la-trawl-pt', label: 'LA Part-Time (Trawl Authorized)', description: 'Authorized to use trawl net' },
                         { value: 'lagc-ifq', label: 'LAGC IFQ', description: 'Limited Access General Category IFQ permit' },
-                        { value: 'lagc-ngom', label: 'LAGC NGOM', description: 'Limited Access General Category NGOM permit' },
-                        { value: 'lagc-incidental', label: 'LAGC Incidental', description: 'Limited Access General Category Incidental permit' }
+                        { value: 'lagc-ngom', label: 'LAGC NGOM', description: 'Northern Gulf of Maine permit' },
+                        { value: 'lagc-incidental', label: 'LAGC Incidental', description: 'Incidental catch permit' },
+                        { value: 'recreational', label: 'Recreational', description: 'No federal retention' }
                     ],
                     cfr: '50 CFR 648.4'
                 },
@@ -410,9 +480,9 @@ const SPECIES_DATA = {
                     dependsOn: ['permitType'],
                     unit: {
                         shucked: 'lbs (shucked)',
-                        inshell: 'bushels (in-shell)'
+                        inshell: 'lbs (in-shell)'
                     },
-                    notes: 'Record both shucked weight (lbs) and in-shell bushels if applicable',
+                    notes: 'Enter shucked weight (lb) or in-shell weight (lb). LAGC IFQ example: 600 lb shucked or 4,998 lb in-shell shoreward of VMS.',
                     cfr: '50 CFR 648.53'
                 },
                 possessionLimitCheck: {
@@ -423,14 +493,19 @@ const SPECIES_DATA = {
                     dependsOn: ['permitType', 'possessionAmount'],
                     autoCheck: true,
                     limits: {
-                        'la-full': { shucked: 18000, inshell: 2250, accessAreaTrip: { shucked: 12000, inshell: 1500 } },
-                        'la-part': { shucked: 14400, inshell: 1800, accessAreaTrip: { shucked: 9600, inshell: 1200 } },
-                        'la-occ': { shucked: 7200, inshell: 900 },
-                        'lagc-ifq': { shucked: 600, inshell: 75, accessAreaTrip: { shucked: 800, inshell: 100 } },
-                        'lagc-ngom': { shucked: 200, inshell: 25 },
-                        'lagc-incidental': { shucked: 40, inshell: 5 }
+                        recreational: { shucked: 0, inshell: 0 },
+                        'la-full': { shucked: 400, inshell: 3332, unlimitedOnDas: true, accessAreaTrip: { shucked: 12000, inshell: 99960 } },
+                        'la-part': { shucked: 400, inshell: 3332, unlimitedOnDas: true, accessAreaTrip: { shucked: 9600, inshell: 79968 } },
+                        'la-occ': { shucked: 400, inshell: 3332, unlimitedOnDas: true },
+                        'la-small-ft': { shucked: 400, inshell: 3332, unlimitedOnDas: true },
+                        'la-small-pt': { shucked: 400, inshell: 3332, unlimitedOnDas: true },
+                        'la-trawl-ft': { shucked: 400, inshell: 3332, unlimitedOnDas: true },
+                        'la-trawl-pt': { shucked: 400, inshell: 3332, unlimitedOnDas: true },
+                        'lagc-ifq': { shucked: 600, inshell: 4998, accessAreaTrip: { shucked: 800, inshell: 6664 } },
+                        'lagc-ngom': { shucked: 200, inshell: 1666 },
+                        'lagc-incidental': { shucked: 40, inshell: 333 }
                     },
-                    notes: 'If fishing in a scallop Access Area, use accessAreaTrip limits (Framework 39). LAGC IFQ open-area trip: 600 lb shucked; access-area trip: 800 lb shucked.',
+                    notes: 'LA unlimited on scallop DAS; shoreward of VMS max 3,332 lb in-shell. Access area trips use Framework 39 shucked allocations.',
                     violation: {
                         ifExceeds: 'VIOLATION: Possession amount exceeds permit limit (50 CFR 648.53)'
                     },

@@ -73,8 +73,10 @@ SPECIES_DATA['butterfish'] = {
                 field: 'permitType',
                 required: true,
                 options: [
-                    { value: 'commercial', label: 'Butterfish Commercial Permit', description: 'Commercial fishing permit' },
-                    { value: 'recreational', label: 'Recreational (No Federal Permit Required)', description: 'Recreational fishing' }
+                    { value: 'smb6-butterfish-moratorium', label: 'SMB 6 Butterfish Moratorium', description: 'Unlimited (large mesh) or 5,000 lbs (small mesh)' },
+                    { value: 'smb3-incidental', label: 'SMB 3 Squid/Butterfish Incidental', description: '600 lbs butterfish/trip' },
+                    { value: 'smb2-party-charter', label: 'SMB 2 Party/Charter', description: 'Unlimited butterfish (operator permit required)' },
+                    { value: 'recreational', label: 'Recreational (No Federal Permit Required)', description: 'No federal possession limit' }
                 ],
                 cfr: '50 CFR 648.4'
             },
@@ -88,6 +90,20 @@ SPECIES_DATA['butterfish'] = {
                 notes: 'Record total weight in pounds',
                 cfr: '50 CFR 648.24'
             },
+            meshSize: {
+                question: 'What mesh size is in use? (SMB 6 butterfish moratorium)',
+                field: 'meshSize',
+                required: false,
+                type: 'choice',
+                dependsOn: ['permitType'],
+                applicablePermits: ['smb6-butterfish-moratorium'],
+                options: [
+                    { value: 'large-mesh', label: 'Large mesh (≥3″ diamond or ≥2 5/8″ square)', notes: 'Unlimited possession' },
+                    { value: 'small-mesh', label: 'Small mesh (<3″ diamond or <2 5/8″ square)', notes: '5,000 lbs/trip limit' }
+                ],
+                notes: 'Mesh determines butterfish moratorium trip limit.',
+                cfr: '50 CFR 648.24'
+            },
             possessionLimitCheck: {
                 question: 'Does the possession amount exceed the permit limit or quota?',
                 field: 'exceedsLimit',
@@ -96,10 +112,12 @@ SPECIES_DATA['butterfish'] = {
                 dependsOn: ['permitType', 'possessionAmount'],
                 autoCheck: true,
                 limits: {
-                    'commercial': null, // Subject to quota - check current trip limits
-                    'recreational': null // No federal limit
+                    'smb6-butterfish-moratorium': null,
+                    'smb3-incidental': null,
+                    'smb2-party-charter': null,
+                    'recreational': null
                 },
-                notes: 'Commercial limits subject to annual quota - check current trip limits and quota status. Recreational: No federal possession limit.',
+                notes: 'SMB 6: 5,000 lbs if mesh <3″ diamond or <2 5/8″ square; unlimited with large mesh.',
                 violation: {
                     ifExceeds: 'VIOLATION: Possession amount exceeds permit limit or quota (50 CFR 648.24)'
                 },

@@ -37,22 +37,24 @@ SPECIES_DATA['billfish'] = {
             },
             'recreational': {
                 name: 'Recreational',
-                limit: { count: 1, unit: 'fish' },
-                cfr: '50 CFR 635.23',
-                notes: '1 billfish per vessel per trip. Includes blue marlin, white marlin, and sailfish. Must be reported within 24 hours.'
+                limit: null,
+                unit: 'No trip limit',
+                cfr: '50 CFR 635.22',
+                notes: 'No federal trip limit for white marlin, blue marlin, roundscale spearfish, and sailfish. Rod and reel only. Report within 24 hours.'
             },
             'charter-headboat': {
                 name: 'Charter/Headboat',
-                limit: { count: 1, unit: 'fish' },
-                cfr: '50 CFR 635.23',
-                notes: '1 billfish per vessel per trip.'
+                limit: null,
+                unit: 'No trip limit',
+                cfr: '50 CFR 635.22',
+                notes: 'No federal trip limit for allowable billfish species. Rod and reel only.'
             }
         },
         size: {
             minimum: null,
-            unit: 'varies by species',
-            cfr: '50 CFR 635.23',
-            notes: 'Size limits vary by billfish species. Blue marlin: 99" lower jaw fork length minimum. White marlin and sailfish: no minimum size.'
+            unit: 'varies by species (LJFL)',
+            cfr: '50 CFR 635.22',
+            notes: 'Blue marlin 99" LJFL; white marlin 66" LJFL; sailfish 63" LJFL; roundscale spearfish 66" LJFL. Longbill spearfish prohibited.'
         },
         gear: {
             'rod-reel': {
@@ -91,9 +93,9 @@ SPECIES_DATA['billfish'] = {
                 type: 'choice',
                 options: [
                     { value: 'blue-marlin', label: 'Blue Marlin', notes: '99" lower jaw fork length minimum' },
-                    { value: 'white-marlin', label: 'White Marlin', notes: 'No minimum size' },
-                    { value: 'sailfish', label: 'Sailfish', notes: 'No minimum size' },
-                    { value: 'roundscale-spearfish', label: 'Roundscale Spearfish', notes: 'No minimum size' }
+                    { value: 'white-marlin', label: 'White Marlin', notes: '66" lower jaw fork length minimum' },
+                    { value: 'sailfish', label: 'Sailfish', notes: '63" lower jaw fork length minimum' },
+                    { value: 'roundscale-spearfish', label: 'Roundscale Spearfish', notes: '66" lower jaw fork length minimum' }
                 ],
                 notes: 'Billfish retention limits vary by species',
                 cfr: '50 CFR 635.23'
@@ -116,11 +118,11 @@ SPECIES_DATA['billfish'] = {
                 dependsOn: ['permitType', 'billfishSpecies', 'numberOfBillfish'],
                 autoCheck: true,
                 limits: {
-                    'commercial': null, // Subject to quota allocation
-                    'recreational': { count: 1, unit: 'billfish per vessel per trip' },
-                    'charter-headboat': { count: 1, unit: 'billfish per vessel per trip' }
+                    'commercial': null,
+                    'recreational': null,
+                    'charter-headboat': null
                 },
-                notes: 'Commercial limits subject to quota allocation. Recreational and Charter/Headboat: 1 billfish per vessel per trip.',
+                notes: 'Recreational and Charter/Headboat: no federal trip limit for allowable billfish. Commercial sale prohibited.',
                 violation: {
                     ifExceeds: 'VIOLATION: Possession amount exceeds permit limit (50 CFR 635.23)'
                 },
@@ -135,9 +137,9 @@ SPECIES_DATA['billfish'] = {
                 dependsOn: ['billfishSpecies'],
                 minimum: 99,
                 applicableSpecies: ['blue-marlin'],
-                notes: 'Blue marlin minimum size: 99" lower jaw fork length. White marlin, sailfish, and roundscale spearfish: no minimum size.',
+                notes: 'Blue marlin minimum: 99" LJFL. White marlin 66" LJFL; sailfish 63" LJFL; roundscale spearfish 66" LJFL.',
                 violation: {
-                    ifBelow: 'VIOLATION: Blue marlin below minimum size must be released (50 CFR 635.23)'
+                    ifBelow: 'VIOLATION: Billfish below minimum size must be released (50 CFR 635.22)'
                 },
                 cfr: '50 CFR 635.23'
             },

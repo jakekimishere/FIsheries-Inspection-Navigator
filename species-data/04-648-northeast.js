@@ -9,7 +9,15 @@ SPECIES_DATA['atlantic-salmon'] = {
     image: null,
     imagePath: 'images/fish/Atlantic_Salmon.webp',
     color: '#ff6b6b',
+    prohibited: true,
     regulations: {
+        dataSources: [
+            {
+                title: 'Atlantic Salmon — 50 CFR 648 Subpart C',
+                url: 'https://www.ecfr.gov/current/title-50/chapter-VI/part-648/subpart-C',
+                effective: '2026-05-21'
+            }
+        ],
         permits: {
             'commercial': {
                 name: 'Atlantic Salmon Commercial Permit',
@@ -30,7 +38,7 @@ SPECIES_DATA['atlantic-salmon'] = {
                 unit: 'fish',
                 prohibited: true,
                 cfr: '50 CFR 648.40',
-                notes: 'Possession in the EEZ is prohibited (prima facie evidence of violation). Incidental catch must be released for maximum survival.'
+                notes: 'Incidental catch must be released for maximum probability of survival.'
             },
             'recreational': {
                 name: 'Recreational / EEZ',
@@ -130,35 +138,48 @@ SPECIES_DATA['surf-clam'] = {
             'commercial': {
                 name: 'Surf Clam/Ocean Quahog Commercial Permit',
                 required: true,
-                cfr: '50 CFR 648.4'
+                cfr: '50 CFR 648.4',
+                notes: 'Includes surf clam, ocean quahog, and Maine mahogany quahog (north of 43°50′ N). VMS and operator permit required.'
+            },
+            'commercial-maine-mahogany': {
+                name: 'Maine Mahogany Quahog Commercial',
+                required: true,
+                cfr: '50 CFR 648.4',
+                notes: 'Harvest north of 43°50′ N only.'
             },
             'recreational': {
-                name: 'Recreational (No Federal Permit Required)',
+                name: 'Recreational Surf Clam/Ocean Quahog',
                 required: false,
-                cfr: null
+                cfr: '50 CFR 648 Subpart E'
             }
         },
         possession: {
             'commercial': {
                 name: 'Commercial',
                 limit: null,
-                unit: 'bushels',
+                unit: 'bushels per trip',
                 cfr: '50 CFR 648.70',
-                notes: 'Subject to quota and trip limits. Check current regulations.'
+                notes: 'Unlimited per trip when fishery open (subject to quota closure).'
+            },
+            'commercial-maine-mahogany': {
+                name: 'Maine Mahogany Quahog Commercial',
+                limit: null,
+                unit: 'bushels per trip',
+                cfr: '50 CFR 648.70',
+                notes: 'Unlimited per trip when fishery open; north of 43°50′ N.'
             },
             'recreational': {
                 name: 'Recreational',
-                limit: null,
-                unit: 'bushels',
-                cfr: null,
-                notes: 'Check state regulations'
+                limit: { count: 2, unit: 'bushels' },
+                cfr: '50 CFR 648 Subpart E',
+                notes: '2 bushels federally; closed areas still apply.'
             }
         },
         size: {
-            minimum: 4.75,
-            unit: 'inches (shell length)',
+            minimum: null,
+            unit: null,
             cfr: '50 CFR 648.70',
-            notes: '4.75" minimum shell length'
+            notes: 'No federal minimum size for surf clam.'
         },
         gear: {
             'dredge': {
@@ -180,8 +201,9 @@ SPECIES_DATA['surf-clam'] = {
                 field: 'permitType',
                 required: true,
                 options: [
-                    { value: 'commercial', label: 'Surf Clam/Ocean Quahog Commercial Permit', description: 'Commercial fishing permit' },
-                    { value: 'recreational', label: 'Recreational (No Federal Permit Required)', description: 'Recreational fishing' }
+                    { value: 'commercial', label: 'Surf Clam/Ocean Quahog Commercial Permit', description: 'VMS and operator permit required' },
+                    { value: 'commercial-maine-mahogany', label: 'Maine Mahogany Quahog', description: 'North of 43°50′ N' },
+                    { value: 'recreational', label: 'Recreational', description: '2 bushels; no VMS or operator permit' }
                 ],
                 cfr: '50 CFR 648.4'
             },
@@ -204,25 +226,21 @@ SPECIES_DATA['surf-clam'] = {
                 autoCheck: true,
                 limits: {
                     'commercial': null,
-                    'recreational': null
+                    'commercial-maine-mahogany': null,
+                    'recreational': { count: 2, unit: 'bushels' }
                 },
-                notes: 'Commercial limits subject to quota and trip limits - check current regulations. Recreational: Check state regulations.',
+                notes: 'Commercial: unlimited per trip when fishery open. Recreational: 2 bushels (closed areas still apply).',
                 violation: {
                     ifExceeds: 'VIOLATION: Possession amount exceeds permit limit or quota (50 CFR 648.70)'
                 },
                 cfr: '50 CFR 648.70'
             },
             sizeCompliance: {
-                question: 'What is the shell length of the surf clams?',
+                question: 'Is there a size compliance issue?',
                 field: 'shellLength',
-                required: true,
-                type: 'number',
-                unit: 'inches',
-                minimum: 4.75,
-                notes: 'Minimum size: 4.75" shell length',
-                violation: {
-                    ifBelow: 'VIOLATION: Surf clam below minimum size must be released (50 CFR 648.70)'
-                },
+                required: false,
+                type: 'boolean',
+                notes: 'No federal minimum size for surf clam.',
                 cfr: '50 CFR 648.70'
             },
             gearType: {
@@ -242,7 +260,7 @@ SPECIES_DATA['surf-clam'] = {
                 required: false,
                 type: 'auto',
                 dependsOn: ['permitType'],
-                applicablePermits: ['commercial'],
+                applicablePermits: ['commercial', 'commercial-maine-mahogany'],
                 autoCheck: true,
                 notes: 'Check current quota status - fishery may close when quota is reached',
                 cfr: '50 CFR 648.70'
@@ -276,35 +294,48 @@ SPECIES_DATA['ocean-quahog'] = {
             'commercial': {
                 name: 'Surf Clam/Ocean Quahog Commercial Permit',
                 required: true,
-                cfr: '50 CFR 648.4'
+                cfr: '50 CFR 648.4',
+                notes: 'Includes surf clam, ocean quahog, and Maine mahogany quahog (north of 43°50′ N). VMS and operator permit required.'
+            },
+            'commercial-maine-mahogany': {
+                name: 'Maine Mahogany Quahog Commercial',
+                required: true,
+                cfr: '50 CFR 648.4',
+                notes: 'Harvest north of 43°50′ N only.'
             },
             'recreational': {
-                name: 'Recreational (No Federal Permit Required)',
+                name: 'Recreational Surf Clam/Ocean Quahog',
                 required: false,
-                cfr: null
+                cfr: '50 CFR 648 Subpart E'
             }
         },
         possession: {
             'commercial': {
                 name: 'Commercial',
                 limit: null,
-                unit: 'bushels',
+                unit: 'bushels per trip',
                 cfr: '50 CFR 648.70',
-                notes: 'Subject to quota and trip limits. Check current regulations.'
+                notes: 'Unlimited per trip when fishery open (subject to quota closure).'
+            },
+            'commercial-maine-mahogany': {
+                name: 'Maine Mahogany Quahog Commercial',
+                limit: null,
+                unit: 'bushels per trip',
+                cfr: '50 CFR 648.70',
+                notes: 'Unlimited per trip when fishery open; north of 43°50′ N.'
             },
             'recreational': {
                 name: 'Recreational',
-                limit: null,
-                unit: 'bushels',
-                cfr: null,
-                notes: 'Check state regulations'
+                limit: { count: 2, unit: 'bushels' },
+                cfr: '50 CFR 648 Subpart E',
+                notes: '2 bushels federally; closed areas still apply.'
             }
         },
         size: {
-            minimum: 3,
-            unit: 'inches (shell width)',
+            minimum: null,
+            unit: null,
             cfr: '50 CFR 648.70',
-            notes: '3" minimum shell width'
+            notes: 'No federal minimum size for ocean quahog.'
         },
         gear: {
             'dredge': {
@@ -326,8 +357,9 @@ SPECIES_DATA['ocean-quahog'] = {
                 field: 'permitType',
                 required: true,
                 options: [
-                    { value: 'commercial', label: 'Surf Clam Commercial Permit', description: 'Commercial fishing permit' },
-                    { value: 'recreational', label: 'Recreational (No Federal Permit Required)', description: 'Recreational fishing' }
+                    { value: 'commercial', label: 'Surf Clam/Ocean Quahog Commercial Permit', description: 'VMS and operator permit required' },
+                    { value: 'commercial-maine-mahogany', label: 'Maine Mahogany Quahog', description: 'North of 43°50′ N' },
+                    { value: 'recreational', label: 'Recreational', description: '2 bushels; no VMS or operator permit' }
                 ],
                 cfr: '50 CFR 648.4'
             },
@@ -350,25 +382,21 @@ SPECIES_DATA['ocean-quahog'] = {
                 autoCheck: true,
                 limits: {
                     'commercial': null,
-                    'recreational': null
+                    'commercial-maine-mahogany': null,
+                    'recreational': { count: 2, unit: 'bushels' }
                 },
-                notes: 'Commercial limits subject to quota and trip limits - check current regulations. Recreational: Check state regulations.',
+                notes: 'Commercial: unlimited per trip when fishery open. Recreational: 2 bushels (closed areas still apply).',
                 violation: {
                     ifExceeds: 'VIOLATION: Possession amount exceeds permit limit or quota (50 CFR 648.70)'
                 },
                 cfr: '50 CFR 648.70'
             },
             sizeCompliance: {
-                question: 'What is the shell width of the clams?',
+                question: 'Is there a size compliance issue?',
                 field: 'shellWidth',
-                required: true,
-                type: 'number',
-                unit: 'inches',
-                minimum: 3,
-                notes: 'Minimum size: 3" shell width',
-                violation: {
-                    ifBelow: 'VIOLATION: Surf clam below minimum size must be released (50 CFR 648.70)'
-                },
+                required: false,
+                type: 'boolean',
+                notes: 'No federal minimum size for ocean quahog.',
                 cfr: '50 CFR 648.70'
             },
             gearType: {
@@ -388,7 +416,7 @@ SPECIES_DATA['ocean-quahog'] = {
                 required: false,
                 type: 'auto',
                 dependsOn: ['permitType'],
-                applicablePermits: ['commercial'],
+                applicablePermits: ['commercial', 'commercial-maine-mahogany'],
                 autoCheck: true,
                 notes: 'Check current quota status - fishery may close when quota is reached',
                 cfr: '50 CFR 648.70'

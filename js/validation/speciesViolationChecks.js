@@ -589,56 +589,85 @@ function checkGroundfishPossession(speciesId, species, speciesData) {
 function checkScallopPossession(species, speciesData) {
     const violations = [];
     const regs = species.regulations;
-    const permitType = speciesData['permit-type'];
-    
+    const permitType = speciesData['permit-type'] || speciesData.permitType;
+
     const fishingArea = speciesData.fishingArea || speciesData['fishing-area'];
     if (fishingArea === 'closed-area') {
         violations.push('Scallop fishing prohibited in closed areas (50 CFR 648.60)');
         return violations;
     }
 
+    if (permitType === 'recreational') {
+        const amount = speciesData.possessionAmountStandard || speciesData.possessionAmount || 0;
+        if (amount > 0) {
+            violations.push('Recreational scallop retention prohibited (50 CFR 648 Subpart D)');
+        }
+        return violations;
+    }
+
+    if (typeof resolveScallop648Limits === 'function') {
+        const resolved = resolveScallop648Limits(permitType, speciesData);
+        if (resolved?.prohibited) {
+            violations.push('Recreational scallop retention prohibited (50 CFR 648 Subpart D)');
+            return violations;
+        }
+        if (resolved?.unlimited) {
+            return violations;
+        }
+        if (resolved?.limits) {
+            return violations.concat(checkScallopLimitExceeded(resolved.limits, speciesData, resolved.context, resolved.cfr));
+        }
+    }
+
     if (permitType && regs.possession[permitType]) {
         const possEntry = regs.possession[permitType];
+        const onDas = speciesData.onScallopDas === 'yes' || speciesData['on-scallop-das'] === 'yes';
+        if (possEntry.unlimitedOnDas && onDas) {
+            return violations;
+        }
+
         let limits = possEntry.limit;
         if (fishingArea === 'access-area' && possEntry.accessAreaTrip) {
             limits = possEntry.accessAreaTrip;
         }
         const cfr = possEntry.cfr;
-        
-        // Use standardized amount (converted to pounds shucked equivalent)
-        const possessionAmount = speciesData.possessionAmountStandard || speciesData.possessionAmount || 0;
-        const possessionType = speciesData.possessionType || speciesData['possession-type'] || 'shucked';
-        
-        if (limits) {
-            let exceeded = false;
-            let limitText = '';
-            
-            if (possessionType === 'shucked' && limits.shucked) {
-                if (possessionAmount > limits.shucked) {
-                    exceeded = true;
-                    limitText = `${possessionAmount} lbs vs ${limits.shucked} lbs limit`;
-                }
-            } else if (possessionType === 'inshell' && limits.inshell) {
-                const actualBushels = speciesData.possessionAmount || 0;
-                if (actualBushels > limits.inshell) {
-                    exceeded = true;
-                    limitText = `${actualBushels} bushels vs ${limits.inshell} bushels limit`;
-                }
-            } else if (limits.shucked) {
-                // Default to shucked limit check
-                if (possessionAmount > limits.shucked) {
-                    exceeded = true;
-                    limitText = `${possessionAmount} lbs (equivalent) vs ${limits.shucked} lbs limit`;
-                }
-            }
-            
-            if (exceeded) {
-                const areaNote = fishingArea === 'access-area' ? ' (access area trip limit)' : '';
-                violations.push(`Scallop possession exceeds limit: ${limitText}${areaNote}${cfr ? ` (${cfr})` : ''}`);
-            }
-        }
+        violations.push(...checkScallopLimitExceeded(limits, speciesData, fishingArea === 'access-area' ? 'access area trip' : null, cfr));
     }
-    
+
+    return violations;
+}
+
+function checkScallopLimitExceeded(limits, speciesData, contextNote, cfr) {
+    const violations = [];
+    if (!limits) return violations;
+
+    const possessionAmount = speciesData.possessionAmountStandard || speciesData.possessionAmount || 0;
+    const possessionType = speciesData.possessionType || speciesData['possession-type'] || 'shucked';
+
+    let exceeded = false;
+    let limitText = '';
+
+    if (possessionType === 'shucked' && limits.shucked != null) {
+        if (possessionAmount > limits.shucked) {
+            exceeded = true;
+            limitText = `${possessionAmount} lbs shucked vs ${limits.shucked} lbs limit`;
+        }
+    } else if (possessionType === 'inshell' && limits.inshell != null) {
+        const actualInshell = speciesData.possessionAmount || possessionAmount;
+        if (actualInshell > limits.inshell) {
+            exceeded = true;
+            limitText = `${actualInshell} lbs in-shell vs ${limits.inshell} lbs limit`;
+        }
+    } else if (limits.shucked != null && possessionAmount > limits.shucked) {
+        exceeded = true;
+        limitText = `${possessionAmount} lbs vs ${limits.shucked} lbs shucked limit`;
+    }
+
+    if (exceeded) {
+        const areaNote = contextNote ? ` (${contextNote})` : '';
+        violations.push(`Scallop possession exceeds limit: ${limitText}${areaNote}${cfr ? ` (${cfr})` : ''}`);
+    }
+
     return violations;
 }
 

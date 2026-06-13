@@ -1,5 +1,5 @@
 {
-  "lastUpdate": "2026-05-21",
+  "lastUpdate": "2026-06-13",
   "version": "1.1.0",
   "region": "Northeast",
   "dataSource": {
@@ -10,6 +10,145 @@
     "cfr": "50 CFR Parts 648 and 635"
   },
   "changes": [
+    {
+      "date": "2026-06-13",
+      "title": "Monkfish (648) policy and location checklist",
+      "description": "MONKFISH648_POLICY_CONFIG for permit categories A–H and E, VMS/IVR, NFMA/SFMA, DAS limits, gear, sizes, offshore program, and exemption areas. New monkfish species data with assessment questions. Location attestation for canyon closures, GOM/GB gillnet, SNE trawl/gillnet, Mid-Atlantic exemption, NJ sturgeon area, and NFMA letter/VMS.",
+      "affectedSpecies": ["monkfish"],
+      "sources": ["50 CFR Part 648 — Monkfish"]
+    },
+    {
+      "date": "2026-06-13",
+      "title": "NMS exempted fisheries location attestation",
+      "description": "Expanded groundfish location checklist: Small Mesh Areas 1–2, Raised Footrope/GOM Grate/Cultivator Shoal whiting, SNE Exemption, Little Tunny gillnet, Universal Redfish Exemption. GOM Cod Protection and Mobile Gear RGA questions refined for exemptions and seasonal closures.",
+      "affectedSpecies": ["atlantic-cod", "haddock", "pollock", "redfish"],
+      "sources": ["50 CFR Part 648 Subpart F — Exempted fisheries and closed areas"]
+    },
+    {
+      "date": "2026-06-13",
+      "title": "Northeast multispecies (648 Subpart F) policy",
+      "description": "NMS648_POLICY_CONFIG for permit categories, sector vs common pool, stock areas, recreational GOM rules, gear and closed areas. Expanded groundfish location checklist (RMA/stock area, roller gear, US/Canada, SAP, sector LOA, recreational cod outside GOM). Cod recreational bag corrected to GOM RMA rules.",
+      "affectedSpecies": [
+        "atlantic-cod",
+        "haddock",
+        "yellowtail-flounder",
+        "winter-flounder",
+        "pollock",
+        "atlantic-halibut"
+      ],
+      "sources": [
+        "50 CFR Part 648 Subpart F — Northeast Multispecies"
+      ]
+    },
+    {
+      "date": "2026-06-13",
+      "title": "Standardized location checklists",
+      "description": "LOCATION_CHECKLIST_CONFIG merges yes/no special-location questions into assessment for scallop, surf clam/ocean quahog, SMB, herring, and groundfish. Inspector attestation — no GPS. Violations fire when inspector confirms closed area or prohibited location.",
+      "affectedSpecies": [
+        "atlantic-sea-scallop",
+        "surf-clam",
+        "ocean-quahog",
+        "atlantic-mackerel",
+        "longfin-squid",
+        "shortfin-squid",
+        "butterfish",
+        "atlantic-chub-mackerel",
+        "atlantic-herring",
+        "atlantic-cod",
+        "haddock"
+      ],
+      "sources": [
+        "50 CFR Part 648 Subparts B, D, E, F, J",
+        "Inspector location attestation workflow"
+      ]
+    },
+    {
+      "date": "2026-06-13",
+      "title": "Surf clam / ocean quahog (648 Subpart E) policy",
+      "description": "SURFCLAM648_POLICY_CONFIG for commercial unlimited per trip, recreational 2 bushels, cage tags, transfer/shucking rules, reporting, and year-round closed areas (Boston Foul Ground, 106 Dumpsite, NY Bight, Georges Bank PSP, GSC HMA). No federal minimum size per compliance chart.",
+      "affectedSpecies": ["surf-clam", "ocean-quahog"],
+      "sources": [
+        "50 CFR Part 648 Subpart E — Atlantic Surf Clam and Ocean Quahog"
+      ]
+    },
+    {
+      "date": "2026-06-13",
+      "title": "Atlantic Sea Scallop (648 Subpart D) policy",
+      "description": "SCALLOP648_POLICY_CONFIG aligned with compliance chart: permit tiers, shoreward/VMS limits, LAGC IFQ/incidental/NGOM, recreational prohibition, crew/transit/access programs, gear/TDD, reporting, and Stellwagen shipwreck avoidance. Possession limits use in-shell pounds; LA unlimited on DAS.",
+      "affectedSpecies": ["atlantic-sea-scallop"],
+      "sources": [
+        "50 CFR Part 648 Subpart D — Atlantic Sea Scallops",
+        "Framework Adjustment 39 — Atlantic Sea Scallop FMP"
+      ]
+    },
+    {
+      "date": "2026-06-13",
+      "title": "Atlantic Salmon EEZ prohibition policy",
+      "description": "SALMON648_POLICY_CONFIG for EEZ prohibition and identification traits. Species marked prohibited; incidental release for maximum survival noted.",
+      "affectedSpecies": ["atlantic-salmon"],
+      "sources": [
+        "50 CFR Part 648 Subpart C — Atlantic Salmon"
+      ]
+    },
+    {
+      "date": "2026-06-13",
+      "title": "Squid, mackerel, butterfish (648 Subpart B)",
+      "description": "SMB648_POLICY_CONFIG for squid/mackerel/butterfish permit tiers, trip limits, mesh, and exemption areas. SMB permit tiers in assessment, recreational mackerel 25/person. Policy panel for mackerel, longfin, illex, butterfish, chub mackerel.",
+      "affectedSpecies": [
+        "atlantic-mackerel",
+        "longfin-squid",
+        "shortfin-squid",
+        "butterfish",
+        "atlantic-chub-mackerel"
+      ],
+      "sources": [
+        "50 CFR Part 648 Subpart B — Squid, Mackerel, Butterfish"
+      ]
+    },
+    {
+      "date": "2026-06-13",
+      "title": "Swordfish charter/headboat split and blacknose latitude rule",
+      "description": "Swordfish recreational permit options split (charter 6, headboat 15) matching BFT pattern. Blacknose assessment adds catch latitude zone; retention prohibited north of 34°00′ N. Removed blacknose from generic prohibited-shark list.",
+      "affectedSpecies": ["swordfish", "blacknose-shark"],
+      "sources": ["50 CFR Part 635 — HMS sharks and swordfish"]
+    },
+    {
+      "date": "2026-06-13",
+      "title": "HMS sharks, swordfish, billfish, and gear areas",
+      "description": "HMS_HMS_POLICY_CONFIG for sharks, swordfish, billfish, gear areas, and tuna measurement/carcass rules. Shortfin mako zero retention fixed. Swordfish recreational 4/vessel/trip. Billfish no trip limit and updated LJFL minimums. SCS recreational limits in SPECIES_GROUPS.",
+      "affectedSpecies": [
+        "bluefin-tuna",
+        "yellowfin-tuna",
+        "bigeye-tuna",
+        "skipjack-tuna",
+        "albacore-tuna",
+        "swordfish",
+        "billfish",
+        "shortfin-mako-shark",
+        "blue-shark",
+        "dusky-shark",
+        "atlantic-sharpnose-shark",
+        "bonnethead-shark"
+      ],
+      "sources": [
+        "50 CFR Part 635 — HMS compliance guide"
+      ]
+    },
+    {
+      "date": "2026-06-13",
+      "title": "HMS tunas policy and limits",
+      "description": "BFT recreational limits: Angler 2/vessel/day, Charter 3, Headboat 6 (max 1 large school/small medium). HMS_TUNAS_POLICY_CONFIG for selection-page policy panel. Trap prohibited for yellowfin/BAYS. EMS note for longline. Trophy fishery South closed, SNE/GOM open.",
+      "affectedSpecies": [
+        "bluefin-tuna",
+        "yellowfin-tuna",
+        "bigeye-tuna",
+        "skipjack-tuna",
+        "albacore-tuna"
+      ],
+      "sources": [
+        "50 CFR Part 635 — HMS Tunas"
+      ]
+    },
     {
       "date": "2026-05-21",
       "title": "Tier E: quota status, placeholder species data, HMS/648 limits",

@@ -19,6 +19,8 @@ const SPECIES_DATA_FILES = [
     'species-data/11-misc-placeholders.js',
     'species-data/12-648-groundfish.js',
     'species-data/13-648-late-species.js',
+    'species-data/15-648-monkfish.js',
+    'LOCATION_CHECKLIST_CONFIG.js',
     'species-data/14-init.js'
 ];
 
