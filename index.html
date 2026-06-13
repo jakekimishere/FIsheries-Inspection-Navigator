@@ -15,11 +15,13 @@
     <meta http-equiv="Expires" content="0">
     <title>FIN - Fisheries Inspection Navigator</title>
     <script>
-        /* GitHub Pages project site — ensure relative assets resolve under /Fin-Fisheries/ */
+        /* GitHub Pages project site — resolve assets under /{repo}/ */
         (function () {
             if (location.hostname.endsWith('github.io')) {
+                var parts = location.pathname.split('/').filter(Boolean);
+                var repo = parts[0] || 'FIsheries-Inspection-Navigator';
                 var base = document.createElement('base');
-                base.href = '/Fin-Fisheries/';
+                base.href = '/' + repo + '/';
                 document.head.appendChild(base);
             }
         })();

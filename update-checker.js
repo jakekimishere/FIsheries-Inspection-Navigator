@@ -17,7 +17,7 @@ const UPDATE_SOURCES = {
     federalRegister: 'https://www.federalregister.gov/api/v1/articles.json?conditions[agencies][]=national-oceanic-and-atmospheric-administration&conditions[type]=Rule&per_page=20',
     
     // Hosted JSON file for manual updates (optional)
-    hosted: 'https://raw.githubusercontent.com/jakekimishere/Fin-Fisheries/main/regulation-updates.json',
+    hosted: 'https://raw.githubusercontent.com/jakekimishere/FIsheries-Inspection-Navigator/main/regulation-updates.json',
     
     // NOAA Northeast Multispecies updates
     multispecies: 'https://www.fisheries.noaa.gov/new-england-mid-atlantic/commercial-fishing/northeast-multispecies-groundfish'

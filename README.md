@@ -17,16 +17,16 @@ Offline-capable web app for Northeast fisheries and Atlantic HMS compliance asse
 
 **This is the app URL (not the GitHub repo page):**
 
-**https://jakekimishere.github.io/Fin-Fisheries/**
+**https://jakekimishere.github.io/FIsheries-Inspection-Navigator/**
 
-Bookmark that link. The repo at `github.com/jakekimishere/Fin-Fisheries` shows code — it does not run the app.
+Bookmark that link. The repo at `github.com/jakekimishere/FIsheries-Inspection-Navigator` shows code — it does not run the app.
 
-Repo name is **case-sensitive**: `Fin-Fisheries` (capital F).
+Repo name is **case-sensitive**: `FIsheries-Inspection-Navigator`.
 
 ### If you see a blank page, 404, or “site not loaded”
 
-1. Use the **github.io** URL above — not `github.com/.../Fin-Fisheries`.
-2. **Settings → Pages** (on the repo): **Source** = Deploy from a branch → **Branch** = `gh-pages` → **/ (root)** → Save.
+1. Use the **github.io** URL above — not the `github.com` repo page.
+2. **Settings → Pages**: enable Pages if needed, then **Source** = Deploy from a branch → **Branch** = `gh-pages` → **/ (root)** → Save.
 3. **Actions** tab: latest **Deploy to GitHub Pages** must be green (runs on every push to `main`).
 4. Wait 2–5 minutes after a deploy, then open in **Incognito** or hard refresh (**Ctrl+Shift+R** / **Cmd+Shift+R**).
 5. If still broken: DevTools → Application → Service Workers → **Unregister**, then reload (stale offline cache).

@@ -4,8 +4,9 @@
 
 | What | URL |
 |------|-----|
-| **Live app** | https://jakekimishere.github.io/Fin-Fisheries/ |
-| **Source code** | https://github.com/jakekimishere/Fin-Fisheries |
+| **Live app** | https://jakekimishere.github.io/FIsheries-Inspection-Navigator/ |
+| **Legacy URL** | https://jakekimishere.github.io/Fin-Fisheries/ (only if old repo Pages still active) |
+| **Source code** | https://github.com/jakekimishere/FIsheries-Inspection-Navigator |
 
 The app does **not** run on the github.com repo page. You must use the **github.io** link.
 
@@ -24,19 +25,20 @@ If you made the repo private to hide source code, the public **github.io** site 
 
 ## One-time GitHub settings (public repo or Pro)
 
-### Option A — GitHub Actions (recommended)
+**First time:** Settings → Pages → enable Pages if `has_pages` is off.
 
-1. **Pages**: Settings → Pages → Build and deployment:
-   - **Source:** GitHub Actions
-2. Push to `main` — workflow `.github/workflows/deploy-pages.yml` deploys automatically.
-3. Check **Actions** → **Deploy to GitHub Pages** → green checkmark.
-
-### Option B — Deploy from branch
+### Branch deploy (current workflow)
 
 1. **Pages**: Settings → Pages → Build and deployment:
    - **Source:** Deploy from a branch
    - **Branch:** `gh-pages` / **/(root)**
-2. The same workflow also syncs the `gh-pages` branch after each deploy.
+   - Save
+2. Push to `main` — workflow publishes to `gh-pages` automatically.
+3. Wait 1–2 minutes, then open the live URL above.
+
+### Option — GitHub Actions source (optional)
+
+If you prefer Actions-based deploy instead of the `gh-pages` branch, change Pages source to **GitHub Actions** and extend the workflow with `actions/deploy-pages` (see GitHub docs). The current workflow uses branch deploy only.
 
 ### About link (optional)
 
